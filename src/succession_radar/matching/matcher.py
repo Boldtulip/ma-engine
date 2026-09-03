@@ -12,14 +12,40 @@ rule-based output stands on its own.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 import yaml
 
 from succession_radar.adapters.base import Company
 
-KNOWLEDGE_DIR = Path(__file__).parents[3] / "knowledge"
+
+def _default_knowledge_dir() -> Path:
+    """Find the knowledge base.
+
+    Order: an explicit RADAR_KNOWLEDGE_DIR, then a `knowledge` folder
+    beside the installed package, then the repository layout. The
+    environment variable is the supported way to point the engine at
+    your own private knowledge base instead of the bundled one.
+    """
+    env = os.environ.get("RADAR_KNOWLEDGE_DIR")
+    if env:
+        return Path(env)
+    here = Path(__file__).resolve()
+    candidates = [
+        here.parents[1] / "knowledge",   # installed alongside the package
+        here.parents[3] / "knowledge",   # repository checkout
+        Path.cwd() / "knowledge",
+    ]
+    for path in candidates:
+        if path.is_dir():
+            return path
+    return candidates[1]
+
+
+KNOWLEDGE_DIR = _default_knowledge_dir()
 
 
 @dataclass
@@ -30,12 +56,26 @@ class BuyerMatch:
     rationale: str
 
 
-def load_knowledge(knowledge_dir: Path | str = KNOWLEDGE_DIR) -> dict:
+@lru_cache(maxsize=8)
+def _load_dir(knowledge_dir: str) -> dict:
+    path = Path(knowledge_dir)
+    if not path.is_dir():
+        raise FileNotFoundError(
+            f"No knowledge base at {path}. Install the project from its "
+            f"repository (pip install -e .), or set RADAR_KNOWLEDGE_DIR to "
+            f"your own knowledge folder."
+        )
     out = {}
-    for f in Path(knowledge_dir).glob("*.yaml"):
+    for f in sorted(path.glob("*.yaml")):
         with open(f, encoding="utf-8") as fh:
             out[f.stem] = yaml.safe_load(fh)
     return out
+
+
+def load_knowledge(knowledge_dir: Path | str = KNOWLEDGE_DIR) -> dict:
+    """Read every YAML file in the knowledge base. Cached, because the
+    dossier and matcher both read it for every company."""
+    return _load_dir(str(knowledge_dir))
 
 
 def match_buyers(company: Company, knowledge: dict | None = None) -> list[BuyerMatch]:

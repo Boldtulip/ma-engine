@@ -114,6 +114,13 @@ Every number in these files carries a confidence tag — well-sourced,
 medium, or heuristic — so the model and the reader both know how much
 weight it deserves.
 
+To run the engine against your own knowledge base instead of the
+bundled one, point `RADAR_KNOWLEDGE_DIR` at your folder:
+
+```bash
+export RADAR_KNOWLEDGE_DIR=/path/to/my-knowledge
+```
+
 Nothing is hidden in a prompt that is not also in these files. Extend
 them like data, not like code.
 
