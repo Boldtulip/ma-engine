@@ -1,0 +1,81 @@
+# What makes an SME a good acquisition target.
+#
+# These are the checks a banker runs before showing a company to any
+# buyer. The matching module uses them to qualify a target and to flag
+# risks in the dossier. Thresholds carry confidence tags:
+#   well_sourced - read directly from the named source
+#   medium      - from a real named report, exact figure gated
+#   heuristic   - practitioner rule of thumb
+
+quality_checklist:
+  - key: recurring_revenue
+    test: over 50% repeat or recurring revenue is strong; over 80%
+      contractual recurring is a premium asset
+    why: buyers of succession deals pay for continuity, not for a story
+    confidence: heuristic  # the criterion itself is well_sourced (IESE)
+  - key: customer_concentration
+    test: one customer above 20% of revenue is a red flag; above 30%
+      many buyers walk; top five customers should stay under 25-50%
+    why: one dominant customer can leave together with the founder
+    confidence: heuristic  # thresholds; the 25%/50% top-5 lines are CFI
+  - key: margin_quality
+    test: EBITDA margin of 15% or more is the usual screening floor;
+      documented search-fund medians are 21-23%
+    why: thin margins leave no room for transition mistakes
+    confidence: well_sourced  # medians; the 15% floor is heuristic
+  - key: management_depth
+    test: a second tier below the founder actually runs daily work; for
+      a fund platform a full team is needed, for an add-on or a
+      searcher a strong general manager suffices
+    confidence: heuristic
+  - key: capex_intensity
+    test: maintenance capital spending under 20-30% of EBITDA, or below
+      depreciation
+    why: heavy capex turns the EBITDA multiple into fiction
+    confidence: heuristic
+  - key: transferable_licenses
+    test: key certifications, licenses, and contracts survive a change
+      of control; watch for consent clauses and person-bound
+      qualifications
+    why: in China many licenses attach to the entity, which favors
+      share deals over asset deals
+    confidence: heuristic
+  - key: clean_cap_table
+    test: few shareholders, no disputed equity, no blocking minorities,
+      no nominee holders
+    confidence: heuristic
+
+succession_positives:
+  - founder willing to stay 6-24 months after closing; one to two
+    years is the standard framing
+  - documented processes and delegated operations; the owner works on
+    the business, not in it
+  - a clear personal reason to sell (age 60+, health, no heir) — this
+    is what separates a real seller from a price tourist
+  - openness to rollover equity or a seller note, which signals the
+    founder believes in the business after the sale
+
+red_flags:
+  - key: key_man_risk
+    test: the founder is the chief salesperson or chief engineer;
+      relationships die at closing
+  - key: family_payroll
+    test: family members in key roles, especially overpaid or several
+      leaving at once
+  - key: undocumented_processes
+    test: tribal knowledge, no standard procedures, paper records,
+      personal expenses mixed into the books
+  - key: two_sets_of_books
+    test: reported figures differ from tax filings
+    why: common in small Chinese companies and the first thing that
+      kills a deal in due diligence
+  - key: unresolved_guarantees
+    test: founder has personal guarantees on company debt
+    why: a sale that leaves guarantees behind is a trap for the seller;
+      serious buyers address this in the structure
+  - key: price_anchoring
+    test: the owner's "retirement number" is far above any market
+      multiple, or the company has been quietly for sale for years
+  - key: social_insurance_gap
+    test: social insurance paid on lower salaries than actually paid
+    why: creates a contingent liability the buyer inherits

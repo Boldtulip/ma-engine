@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "succession-radar"
+version = "0.1.0"
+description = "An open-source M&A origination engine for China. It finds private companies whose owners are likely to sell, scores them, and drafts the first deal documents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Succession Radar contributors" }]
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+ashare = ["akshare>=1.14", "pandas>=2.0"]
+llm = ["anthropic>=0.40"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+radar = "succession_radar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

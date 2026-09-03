@@ -1,0 +1,55 @@
+# SME valuation rules of thumb.
+#
+# The dossier module uses these to frame price expectations. Same
+# confidence tags as origination_playbook.yaml. These are Western
+# benchmarks; China-specific conventions live in their own section
+# and override where they differ.
+
+earnings_basis:
+  rule: >
+    Below roughly 2M USD of enterprise value, price is quoted as a
+    multiple of SDE (seller's discretionary earnings: EBITDA plus one
+    owner's full compensation and personal add-backs). Above that,
+    price is a multiple of adjusted EBITDA with a market-rate manager
+    salary charged back in. Never mix the two: an SDE multiple runs
+    about 0.5-1.0x lower than the same firm's EBITDA multiple because
+    the earnings base is bigger.
+  confidence: well_sourced  # IBBA Market Pulse segmentation
+
+size_discount:
+  # Smaller companies sell for lower multiples. Anchor points:
+  bands:
+    - {ebitda_usd_m: "1-2", ev_ebitda: "3-5x", confidence: heuristic}
+    - {ebitda_usd_m: "2-5", ev_ebitda: "4-6x", confidence: heuristic}
+    - {ebitda_usd_m: "5-10", ev_ebitda: "5-7x", confidence: heuristic}
+    - {ebitda_usd_m: "10+", ev_ebitda: "6-8x+", confidence: heuristic}
+  best_anchor:
+    rule: search-fund acquisitions, the best-documented SME segment,
+      show a median purchase price of 5.6x EBITDA internationally
+      (IESE 2020, n=56) and 6.0x in the US/Canada (Stanford 2020)
+    confidence: well_sourced
+  quality_premium:
+    rule: above-average margins plus growth earn a persistent premium
+      of roughly 10-30% within each size band (GF Data)
+    confidence: medium
+
+succession_discounts:
+  key_man:
+    rule: high owner dependency costs 10-30% of the clean multiple, or
+      the same headline price gets restructured with more contingent
+      consideration
+    confidence: heuristic
+  note: do not confuse this with the 20-35% discount for lack of
+    marketability in formal valuation literature; they are different
+    concepts and must not be double-counted
+
+structure_parameters:
+  rollover_equity: seller keeps 10-30% in a private-equity recap for a
+    "second bite of the apple"
+  seller_note: 10-30% of price, 5-7 year term, 5-8% interest, usually
+    subordinated
+  earnout: 10-30% of total consideration over 1-3 years, tied to
+    revenue, EBITDA, or retention; used in roughly a fifth to a third
+    of private deals (SRS Acquiom)
+  transition: employment or consulting agreement for 6-24 months
+  confidence: heuristic  # ranges; SRS prevalence figure is medium

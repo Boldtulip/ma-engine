@@ -1,0 +1,108 @@
+# Buyer taxonomy for Chinese private SME targets.
+#
+# This file encodes who buys private SMEs in China,
+# what each buyer type wants, and what rules it follows. The matching
+# module reads this file to build a buyer shortlist with a written
+# rationale. Edit or extend it like data, not like code.
+#
+# v1 — drafted from published market research; figures are indicative.
+
+buyers:
+  - key: listed_company
+    name_cn: A股上市公司
+    name_en: Listed strategic acquirer
+    motive: >
+      Buy profit and industry consolidation. Since the 并购六条 policy
+      (September 2024), listed companies are encouraged to acquire,
+      including across industries, and many need profitable targets to
+      support their own earnings.
+    prefers:
+      - target is profitable, net profit above roughly 20 million CNY
+      - same industry chain or a plausible adjacency
+      - clean books that survive listed-company due diligence
+    avoids:
+      - heavy litigation or unclear ownership
+      - targets too small to matter to a listed balance sheet
+    payment: cash, shares, or a mix; can pay the highest multiple because
+      listed valuations exceed private ones
+    typical_stake: control (51-100%)
+
+  - key: industrial_fund
+    name_cn: 产业并购基金
+    name_en: Industrial M&A fund
+    motive: >
+      Buy control, improve the company for two to three years, then sell
+      it on — often to a listed company. The common structure is a
+      special-purpose vehicle backed by state capital plus a private
+      fund manager.
+    prefers:
+      - stable cash flow and a defensible niche
+      - a founder willing to stay through a transition period
+      - sectors a listed acquirer will want later
+    avoids:
+      - companies fully dependent on the founder personally
+    payment: cash, often in installments tied to performance
+    typical_stake: control (51%+)
+
+  - key: state_platform
+    name_cn: 地方国资平台
+    name_en: Local state-owned platform
+    motive: >
+      Keep employment, tax revenue, and industry chains in the region.
+      State platforms have become the de facto buyer of last resort for
+      significant local companies with no successor.
+    prefers:
+      - the company matters to the local economy or supply chain
+      - manufacturing and hard assets
+    avoids:
+      - paying above appraised value (a formal asset appraisal is
+        mandatory when state capital buys)
+    payment: cash at appraised value; slower process, high certainty
+    typical_stake: control or significant minority
+
+  - key: search_fund
+    name_cn: 搜索基金
+    name_en: Search fund / entrepreneurship through acquisition
+    motive: >
+      A young operator backed by investors buys one company to run it.
+      Embryonic in China (a handful of funds, no closed mainland deal
+      yet) but purpose-built for succession: the seller gets a
+      successor, not just a check.
+    prefers:
+      - revenue roughly 30 to 200 million CNY, stable cash flow
+      - simple business models a new CEO can learn
+      - founder open to a handover period
+    avoids:
+      - complex technology or heavy turnarounds
+    payment: cash plus seller financing; modest multiples
+    typical_stake: control
+
+  - key: trade_buyer
+    name_cn: 同行 / 供应链买家
+    name_en: Trade buyer in the same industry
+    motive: >
+      A competitor, supplier, or customer buys capacity, customers, or
+      certifications it already understands. Most SME deals in China
+      close inside these existing relationships because trust already
+      exists.
+    prefers:
+      - known counterparty, often in the same industrial cluster
+      - assets it can integrate directly
+    avoids:
+      - anything outside its own industry
+    payment: cash, often installments; lowest multiples but fastest trust
+    typical_stake: control or full buyout
+
+  - key: foreign_strategic
+    name_cn: 外资战略买家
+    name_en: Foreign strategic acquirer
+    motive: >
+      Buy market access, a China supply base, or a local license.
+    prefers:
+      - export-oriented or globally relevant niches
+      - clean compliance, transferable certifications
+    avoids:
+      - sectors on the foreign-investment negative list
+      - deals that could trigger national-security review
+    payment: cash, highest process standards, longest timeline
+    typical_stake: control where the negative list allows it

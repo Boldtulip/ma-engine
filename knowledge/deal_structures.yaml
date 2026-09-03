@@ -1,0 +1,50 @@
+# Common deal shapes for succession sales in China.
+#
+# The dossier module uses these to suggest how a deal could be
+# structured, so the output reads like a banker's memo rather than a
+# database row.
+#
+# v1 — drafted from published market practice; parameters are indicative.
+
+structures:
+  - key: majority_with_transition
+    name: Majority sale with founder transition
+    shape: >
+      Buyer takes 60-100% now. The founder stays one to two years as
+      general manager or advisor, sometimes keeping a small stake to be
+      sold later at a pre-agreed price.
+    fits: almost every succession sale; the default answer
+  - key: installment_vam
+    name: Installments with performance terms (对赌)
+    shape: >
+      Price paid in tranches over two to three years, tied to profit
+      targets. Performance clauses between buyer and selling
+      shareholder are enforceable in China; clauses against the
+      company itself are problematic.
+    fits: profitable companies where buyer and seller disagree on price
+  - key: state_appraisal_deal
+    name: State-buyer appraisal deal
+    shape: >
+      When the buyer is state-owned, a licensed appraisal firm values
+      the company first and the price stays close to that appraisal.
+      Slower, heavily documented, but payment is certain.
+    fits: regionally important companies selling to 国资
+  - key: spv_hold_improve_exit
+    name: Fund SPV — hold, improve, exit
+    shape: >
+      A fund vehicle (often state capital + private manager) buys 51%+,
+      professionalizes management, and sells to a listed company within
+      two to three years. The founder can roll part of the proceeds
+      into the vehicle.
+    fits: companies attractive to listed acquirers after cleanup
+
+seller_care:
+  - Personal guarantees on company debt must be released or assumed at
+    closing; leaving them in place has ruined sellers in publicized
+    bad-buyer cases.
+  - Individual sellers pay 20% income tax on the gain from a share
+    transfer; the structure should be planned around this, never
+    around hiding it.
+  - Employee compensation obligations (经济补偿) follow the entity in a
+    share deal; buyers will price them in, sellers should know that
+    before negotiating.
