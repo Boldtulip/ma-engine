@@ -78,12 +78,20 @@ def template_dossier(report: ScoreReport, matches: list[BuyerMatch]) -> str:
 
 
 def llm_dossier(report: ScoreReport, matches: list[BuyerMatch],
-                model: str = DEFAULT_MODEL) -> str | None:
-    """Analyst-written dossier via Claude. Returns None when the LLM
-    path is unavailable, so callers fall back to the template."""
+                model: str = DEFAULT_MODEL, quiet: bool = False) -> str | None:
+    """Analyst-written dossier via Claude.
+
+    Returns None whenever the model cannot be reached, so the caller
+    falls back to the template. Every failure here is non-fatal by
+    design: no missing key, network problem, or API error should ever
+    stop the tool from producing a dossier.
+    """
     try:
         import anthropic
     except ImportError:
+        if not quiet:
+            print("[note] the anthropic package is not installed; writing the "
+                  "template dossier. Install it with: pip install -e '.[llm]'")
         return None
 
     knowledge = load_knowledge()
@@ -97,6 +105,9 @@ def llm_dossier(report: ScoreReport, matches: list[BuyerMatch],
                                 for m in matches),
     )
     try:
+        # Constructing the client raises when no credentials are
+        # configured, and that is not an APIError, so the whole block
+        # is guarded rather than just the request.
         client = anthropic.Anthropic()
         response = client.messages.create(
             model=model,
@@ -110,9 +121,17 @@ def llm_dossier(report: ScoreReport, matches: list[BuyerMatch],
             messages=[{"role": "user", "content": request}],
         )
         if response.stop_reason == "refusal":
+            if not quiet:
+                print("[note] the model declined this request; writing the "
+                      "template dossier instead.")
             return None
-        return "".join(b.text for b in response.content if b.type == "text") or None
-    except anthropic.APIError:
+        text = "".join(b.text for b in response.content if b.type == "text")
+        return text or None
+    except Exception as exc:  # noqa: BLE001 - never let this stop the tool
+        if not quiet:
+            reason = str(exc).splitlines()[0][:160]
+            print(f"[note] could not reach the model ({type(exc).__name__}: "
+                  f"{reason}); writing the template dossier instead.")
         return None
 
 
