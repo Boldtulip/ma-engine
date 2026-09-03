@@ -191,20 +191,31 @@ class AShareAdapter(Adapter):
 
     # -- bulk endpoints, one call each for the whole market -------------
 
-    def universe(self) -> list[dict]:
-        """Codes, names, industry, listing date, market cap."""
+    def universe(self, page_size: int = 500) -> list[dict]:
+        """Codes, names, industry, listing date, market cap.
+
+        This endpoint reports a total in `count` but does not return a
+        `pages` field, so paging is driven by the total and by short
+        pages, never by `pages`.
+        """
         rows: list[dict] = []
         page = 1
+        total: int | None = None
         while True:
             payload = self.client.get_json(SCREENER, {
-                "st": "SECURITY_CODE", "sr": "1", "ps": "500", "p": str(page),
+                "st": "SECURITY_CODE", "sr": "1", "ps": str(page_size),
+                "p": str(page),
                 "sty": "SECUCODE,SECURITY_CODE,SECURITY_NAME_ABBR,NEW_PRICE,"
                        "TOTAL_MARKET_CAP,LISTING_DATE,INDUSTRY",
                 "filter": "", "source": "SELECT_SECURITIES", "client": "WEB"})
-            if not payload.get("success") or not payload.get("result"):
+            result = payload.get("result") or {}
+            data = result.get("data") or []
+            if not payload.get("success") or not data:
                 break
-            rows.extend(payload["result"]["data"])
-            if page >= payload["result"].get("pages", 1):
+            rows.extend(data)
+            if total is None:
+                total = result.get("count")
+            if len(data) < page_size or (total and len(rows) >= total):
                 break
             page += 1
         return rows

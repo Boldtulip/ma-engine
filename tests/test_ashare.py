@@ -83,6 +83,31 @@ def test_build_maps_disclosed_age_and_tenure():
     assert owner.name == "朱保国" and owner.age == 64
 
 
+def test_universe_pagination_uses_count_not_pages():
+    """The screener reports a total in `count` and returns no `pages`
+    field. Paging on `pages` silently stops after the first 500 rows,
+    which is how an earlier full-market scan quietly covered less than
+    a tenth of the market."""
+    import succession_radar.adapters.ashare as mod
+
+    calls = []
+
+    class FakeClient:
+        def get_json(self, url, params=None, retries=3):
+            page = int(params["p"])
+            calls.append(page)
+            start = (page - 1) * 500
+            rows = [{"SECURITY_CODE": f"{i:06d}"}
+                    for i in range(start, min(start + 500, 1200))]
+            return {"success": True, "result": {"data": rows, "count": 1200}}
+
+    adapter = mod.AShareAdapter(progress=False)
+    adapter.client = FakeClient()
+    rows = adapter.universe()
+    assert len(rows) == 1200
+    assert calls == [1, 2, 3]
+
+
 def test_build_skips_state_owned_when_private_only():
     adapter = AShareAdapter(private_only=True, progress=False)
     assert adapter._build(
