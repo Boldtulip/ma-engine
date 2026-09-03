@@ -1,6 +1,6 @@
 # MA Engine
 
-[![tests](https://github.com/OWNER/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/OWNER/ma-engine/actions/workflows/tests.yml)
+[![tests](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **An open-source M&A origination engine for China.** It screens private
