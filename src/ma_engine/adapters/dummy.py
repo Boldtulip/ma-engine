@@ -13,7 +13,7 @@ from __future__ import annotations
 import random
 from typing import Iterable
 
-from succession_radar.adapters.base import Adapter, Company, Person
+from ma_engine.adapters.base import Adapter, Company, Person
 
 SURNAMES = ["王", "李", "张", "刘", "陈", "杨", "黄", "赵", "周", "吴",
             "徐", "孙", "马", "朱", "胡", "郭", "何", "林", "郑", "宋",

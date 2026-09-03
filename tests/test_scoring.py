@@ -1,8 +1,8 @@
-from succession_radar.adapters.base import Company, Person
-from succession_radar.adapters.dummy import DummyAdapter
-from succession_radar.matching.matcher import match_buyers
-from succession_radar.scoring.engine import rank, score_company
-from succession_radar.signals.age import estimate_age, split_name
+from ma_engine.adapters.base import Company, Person
+from ma_engine.adapters.dummy import DummyAdapter
+from ma_engine.matching.matcher import match_buyers
+from ma_engine.scoring.engine import rank, score_company
+from ma_engine.signals.age import estimate_age, split_name
 
 
 def old_founder_no_heir() -> Company:
@@ -40,7 +40,7 @@ def young_founder_with_heir() -> Company:
 def test_age_curve_peaks_in_the_sixties():
     """The decision window is the sixties, not extreme old age. An
     owner still in the chair at 82 has shown he will not sell."""
-    from succession_radar.signals.age import _age_to_score
+    from ma_engine.signals.age import _age_to_score
 
     assert _age_to_score(66) == 1.0
     assert _age_to_score(45) < _age_to_score(58) < _age_to_score(64)

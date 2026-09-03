@@ -11,8 +11,8 @@ import types
 
 import pytest
 
-from succession_radar.adapters.base import Company, Person
-from succession_radar.agent import dossier as mod
+from ma_engine.adapters.base import Company, Person
+from ma_engine.agent import dossier as mod
 
 
 def sample_company() -> Company:

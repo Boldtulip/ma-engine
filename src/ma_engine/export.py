@@ -10,7 +10,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from succession_radar.scoring.engine import ScoreReport
+from ma_engine.scoring.engine import ScoreReport
 
 COLUMNS = [
     "rank", "score", "company", "industry", "region", "owner", "owner_age",

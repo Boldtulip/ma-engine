@@ -17,8 +17,8 @@ import datetime
 from pathlib import Path
 from typing import Optional
 
-from succession_radar.adapters.base import Company
-from succession_radar.signals import Signal
+from ma_engine.adapters.base import Company
+from ma_engine.signals import Signal
 
 # Common two-character (compound) surnames, needed to split full names.
 COMPOUND_SURNAMES = {
@@ -46,6 +46,14 @@ def split_name(full_name: str) -> tuple[str, str]:
     return full_name[:1], full_name[1:]
 
 
+
+def _cohort_phrase(peak: int) -> str:
+    """Describe a peak year the way a person would say it: '1950s' when
+    the table holds a round decade, 'the mid-1950s' when it holds a
+    mid-decade year."""
+    return f"the {peak}s" if peak % 10 == 0 else f"the mid-{peak - 5}s"
+
+
 def estimate_age(full_name: str, year: Optional[int] = None) -> tuple[Optional[int], float, str]:
     """Return (estimated age, confidence, method).
 
@@ -60,13 +68,16 @@ def estimate_age(full_name: str, year: Optional[int] = None) -> tuple[Optional[i
 
     if given in cohorts:
         birth = cohorts[given] + 5  # middle of the decade
-        return year - birth, 0.55, f"given name '{given}' peaks in the {cohorts[given]}s"
+        return (year - birth, 0.55,
+                f"given name '{given}' peaks in {_cohort_phrase(cohorts[given])}")
 
     # Fall back to single characters inside the given name.
     for ch in given:
         if ch in cohorts:
             birth = cohorts[ch] + 5
-            return year - birth, 0.35, f"name character '{ch}' peaks in the {cohorts[ch]}s"
+            return (year - birth, 0.35,
+                    f"name character '{ch}' peaks in "
+                    f"{_cohort_phrase(cohorts[ch])}")
 
     return None, 0.0, "name not in cohort table"
 
@@ -111,7 +122,7 @@ def _age_to_score(age: int) -> float:
     for (x0, y0), (x1, y1) in zip(AGE_CURVE, AGE_CURVE[1:]):
         if x0 <= age <= x1:
             return round(y0 + (y1 - y0) * (age - x0) / (x1 - x0), 3)
-    return 0.0  # linear ramp 50 -> 70
+    return 0.0
 
 
 def founder_age_signal(company: Company) -> Signal:

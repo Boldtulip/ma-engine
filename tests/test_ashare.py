@@ -4,12 +4,12 @@ Nothing here touches the network. The parts worth testing are the
 ownership classifier and the record assembly, both of which are pure.
 """
 
-from succession_radar.adapters.ashare import (
+from ma_engine.adapters.ashare import (
     AShareAdapter,
     classify_ownership,
     em_code,
 )
-from succession_radar.adapters.base import Company, Person
+from ma_engine.adapters.base import Company, Person
 
 
 def test_exchange_prefixes():
@@ -88,7 +88,7 @@ def test_universe_pagination_uses_count_not_pages():
     field. Paging on `pages` silently stops after the first 500 rows,
     which is how an earlier full-market scan quietly covered less than
     a tenth of the market."""
-    import succession_radar.adapters.ashare as mod
+    import ma_engine.adapters.ashare as mod
 
     calls = []
 

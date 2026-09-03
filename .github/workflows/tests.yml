@@ -22,4 +22,4 @@ jobs:
       - name: Run tests
         run: pytest tests -q
       - name: Check the demo runs end to end
-        run: radar demo --n 50 --top 5
+        run: ma-engine demo --n 50 --top 5

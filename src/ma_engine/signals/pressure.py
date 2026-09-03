@@ -8,8 +8,8 @@ owner near retirement chooses to sell rather than hold on.
 
 from __future__ import annotations
 
-from succession_radar.adapters.base import Company
-from succession_radar.signals import Signal
+from ma_engine.adapters.base import Company
+from ma_engine.signals import Signal
 
 
 def sell_pressure_signal(company: Company) -> Signal:

@@ -5,7 +5,7 @@ break every YAML file, and that must fail here rather than at runtime.
 
 import yaml
 
-from succession_radar.matching.matcher import KNOWLEDGE_DIR, load_knowledge
+from ma_engine.matching.matcher import KNOWLEDGE_DIR, load_knowledge
 
 EXPECTED_FILES = {
     "buyers_china",

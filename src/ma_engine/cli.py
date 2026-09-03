@@ -1,9 +1,9 @@
 """Command line interface.
 
 Three commands:
-  radar demo                 run the whole pipeline on bundled synthetic data
-  radar score --csv FILE     rank companies from your own CSV
-  radar dossier --name NAME  full dossier for one company (demo or CSV data)
+  ma-engine demo                 run the whole pipeline on bundled synthetic data
+  ma-engine score --csv FILE     rank companies from your own CSV
+  ma-engine dossier --name NAME  full dossier for one company (demo or CSV data)
 """
 
 from __future__ import annotations
@@ -12,12 +12,12 @@ import argparse
 import sys
 from pathlib import Path
 
-from succession_radar.adapters.base import Company
-from succession_radar.adapters.csv_adapter import CsvAdapter
-from succession_radar.adapters.dummy import DummyAdapter
-from succession_radar.agent.dossier import build_dossier
-from succession_radar.matching.matcher import match_buyers
-from succession_radar.scoring.engine import rank
+from ma_engine.adapters.base import Company
+from ma_engine.adapters.csv_adapter import CsvAdapter
+from ma_engine.adapters.dummy import DummyAdapter
+from ma_engine.agent.dossier import build_dossier
+from ma_engine.matching.matcher import match_buyers
+from ma_engine.scoring.engine import rank
 
 
 DEFAULT_CACHE = Path("data/ashare_scored.json")
@@ -27,7 +27,7 @@ def _load(args: argparse.Namespace) -> list[Company]:
     if getattr(args, "csv", None):
         return list(CsvAdapter(args.csv).companies())
     if getattr(args, "ashare", False):
-        from succession_radar.adapters.ashare import AShareAdapter
+        from ma_engine.adapters.ashare import AShareAdapter
 
         cache = getattr(args, "cache", None) or DEFAULT_CACHE
         return list(AShareAdapter(limit=getattr(args, "limit", None),
@@ -56,10 +56,10 @@ def _print_ranking(companies: list[Company], top: int) -> None:
 
 
 def cmd_demo(args: argparse.Namespace) -> None:
-    print("Succession Radar — demo on synthetic data.")
+    print("MA Engine — demo on synthetic data.")
     print("Every company and person below is fictional.")
     _print_ranking(_load(args), args.top)
-    print("\nNext: `radar dossier --name <company>` writes the full dossier.")
+    print("\nNext: `ma-engine dossier --name <company>` writes the full dossier.")
 
 
 def cmd_score(args: argparse.Namespace) -> None:
@@ -67,7 +67,7 @@ def cmd_score(args: argparse.Namespace) -> None:
 
 
 def cmd_export(args: argparse.Namespace) -> None:
-    from succession_radar import export
+    from ma_engine import export
 
     reports = rank(_load(args))
     csv_path = export.write_csv(reports, args.csv_out)
@@ -93,7 +93,7 @@ def cmd_dossier(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="radar", description=__doc__)
+    parser = argparse.ArgumentParser(prog="ma-engine", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_demo = sub.add_parser("demo", help="run the pipeline on synthetic data")

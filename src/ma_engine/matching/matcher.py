@@ -19,18 +19,18 @@ from pathlib import Path
 
 import yaml
 
-from succession_radar.adapters.base import Company
+from ma_engine.adapters.base import Company
 
 
 def _default_knowledge_dir() -> Path:
     """Find the knowledge base.
 
-    Order: an explicit RADAR_KNOWLEDGE_DIR, then a `knowledge` folder
+    Order: an explicit MA_ENGINE_KNOWLEDGE_DIR, then a `knowledge` folder
     beside the installed package, then the repository layout. The
     environment variable is the supported way to point the engine at
     your own private knowledge base instead of the bundled one.
     """
-    env = os.environ.get("RADAR_KNOWLEDGE_DIR")
+    env = os.environ.get("MA_ENGINE_KNOWLEDGE_DIR")
     if env:
         return Path(env)
     here = Path(__file__).resolve()
@@ -62,7 +62,7 @@ def _load_dir(knowledge_dir: str) -> dict:
     if not path.is_dir():
         raise FileNotFoundError(
             f"No knowledge base at {path}. Install the project from its "
-            f"repository (pip install -e .), or set RADAR_KNOWLEDGE_DIR to "
+            f"repository (pip install -e .), or set MA_ENGINE_KNOWLEDGE_DIR to "
             f"your own knowledge folder."
         )
     out = {}

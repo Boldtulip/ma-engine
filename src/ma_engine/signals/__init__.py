@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from succession_radar.adapters.base import Company
+from ma_engine.adapters.base import Company
 
 
 @dataclass
@@ -22,7 +22,7 @@ class Signal:
 
 def compute_all(company: Company) -> list[Signal]:
     """Run every signal on one company."""
-    from succession_radar.signals import age, heirs, pressure, tenure
+    from ma_engine.signals import age, heirs, pressure, tenure
 
     return [
         age.founder_age_signal(company),

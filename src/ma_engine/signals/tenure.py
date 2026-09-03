@@ -16,8 +16,8 @@ from __future__ import annotations
 
 import datetime
 
-from succession_radar.adapters.base import Company
-from succession_radar.signals import Signal
+from ma_engine.adapters.base import Company
+from ma_engine.signals import Signal
 
 
 def _score(years: int) -> float:

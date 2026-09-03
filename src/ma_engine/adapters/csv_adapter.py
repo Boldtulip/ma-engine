@@ -12,7 +12,7 @@ import csv
 from pathlib import Path
 from typing import Iterable
 
-from succession_radar.adapters.base import Adapter, Company, Person
+from ma_engine.adapters.base import Adapter, Company, Person
 
 
 def _parse_people(cell: str, pct: bool) -> list[Person]:

@@ -1,4 +1,7 @@
-# Succession Radar 接班雷达
+# MA Engine
+
+[![tests](https://github.com/OWNER/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/OWNER/ma-engine/actions/workflows/tests.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **An open-source M&A origination engine for China.** It screens private
 companies, estimates which owners are approaching succession without a
@@ -14,6 +17,10 @@ through the same transition ten years earlier, and deal *sourcing* —
 finding the companies before anyone else — turned out to be the
 bottleneck of the entire market. This project is the sourcing layer,
 open-sourced.
+
+<p align="center">
+  <img src="docs/demo.svg" alt="ma-engine ranking listed Chinese private companies by succession risk, with the reasons for each score" width="880">
+</p>
 
 ## What it found
 
@@ -36,32 +43,67 @@ matched exactly.
 
 The scored table is in [`data/succession_watchlist.csv`](data/succession_watchlist.csv)
 and the top 100 in [`data/succession_watchlist.md`](data/succession_watchlist.md).
-Regenerate either at any time with `radar score --ashare`.
+Regenerate either at any time with `ma-engine score --ashare`.
 
 These are listed companies, so this is the visible tip of the problem.
 The same signals apply to the roughly 50 million private companies that
 publish far less — which is what the other adapters are for.
 
+```mermaid
+flowchart LR
+    subgraph SOURCES["1 · Where companies come from"]
+        direction TB
+        A1["Bundled demo data<br/><i>runs with no setup</i>"]
+        A2["A-share disclosures<br/><i>free, real ages</i>"]
+        A3["Your CSV"]
+        A4["QCC API<br/><i>your credentials</i>"]
+    end
+
+    subgraph SIGNALS["2 · What the engine reads"]
+        direction TB
+        S1["Owner age<br/><i>disclosed, or from the given name</i>"]
+        S2["Owner tenure<br/><i>how long in the chair</i>"]
+        S3["Visible heir?<br/><i>younger relative on record</i>"]
+        S4["Sell pressure<br/><i>pledges, litigation</i>"]
+    end
+
+    SCORE["3 · Succession score 0-100<br/><b>every point traced to a sentence</b>"]
+
+    subgraph KNOW["Knowledge base · YAML you can read and edit"]
+        direction TB
+        K1["Who buys in China"]
+        K2["What makes a good target"]
+        K3["Deal shapes and seller economics"]
+    end
+
+    subgraph OUT["4 · What you get"]
+        direction TB
+        O1["Ranked target list"]
+        O2["Buyer shortlist<br/><i>with written reasons</i>"]
+        O3["Deal dossier"]
+    end
+
+    SOURCES --> SIGNALS --> SCORE --> OUT
+    KNOW -.-> OUT
+
+    style SCORE fill:#1f6feb,stroke:#1f6feb,color:#ffffff
+    style KNOW fill:#f6f8fa,stroke:#8b949e,stroke-dasharray: 4 3
 ```
- universe of companies          signals                output
-┌─────────────────────┐   ┌─────────────────┐   ┌──────────────────────┐
-│ adapters/           │   │ owner age        │   │ ranked target list   │
-│  dummy data (bundled)│──▶│ owner tenure     │──▶│ succession score     │
-│  A-share disclosures │   │ visible heir?    │   │ + reasons            │
-│  your CSV            │   │ sell pressure    │   │ buyer shortlist      │
-│  QCC API (your keys) │   └─────────────────┘   │ deal dossier         │
-└─────────────────────┘                          └──────────────────────┘
-```
+
+The engine is open. **The fuel is not.** Credentials, calibrated
+weights, and your record of which companies actually sold stay on your
+side — which is why cloning this repository gives you the machine, not
+the advantage.
 
 ## Quickstart
 
 ```bash
-git clone <this repo> && cd succession-radar
+git clone <this repo> && cd ma-engine
 pip install -e .
-radar demo
+ma-engine demo
 ```
 
-`radar demo` screens 200 bundled synthetic companies and prints the
+`ma-engine demo` screens 200 bundled synthetic companies and prints the
 ranked pipeline in seconds. No API keys, no accounts, no setup.
 
 ```
@@ -74,7 +116,7 @@ ranked pipeline in seconds. No API keys, no accounts, no setup.
 Then write the full dossier for any company:
 
 ```bash
-radar dossier --name 山东凯丰
+ma-engine dossier --name 山东凯丰
 ```
 
 The dossier contains the succession analysis, a ranked buyer shortlist
@@ -167,10 +209,10 @@ medium, or heuristic — so the model and the reader both know how much
 weight it deserves.
 
 To run the engine against your own knowledge base instead of the
-bundled one, point `RADAR_KNOWLEDGE_DIR` at your folder:
+bundled one, point `MA_ENGINE_KNOWLEDGE_DIR` at your folder:
 
 ```bash
-export RADAR_KNOWLEDGE_DIR=/path/to/my-knowledge
+export MA_ENGINE_KNOWLEDGE_DIR=/path/to/my-knowledge
 ```
 
 Nothing is hidden in a prompt that is not also in these files. Extend
@@ -181,11 +223,11 @@ them like data, not like code.
 The engine is open. The fuel is yours:
 
 - **Bundled synthetic data** — works instantly, every name fictional.
-- **A-share disclosures** — `radar score --ashare`. Listed companies
+- **A-share disclosures** — `ma-engine score --ashare`. Listed companies
   must publish their chairman's exact age, so this is the one segment
   where the most important signal is a fact rather than an estimate.
   Free, public, no credentials. See below.
-- **Your CSV** — `radar score --csv yourfile.csv` with your own
+- **Your CSV** — `ma-engine score --csv yourfile.csv` with your own
   research.
 - **QCC official API** (`adapters/qcc.py`) — the private-company path.
   Requires your own corporate-verified credentials on openapi.qcc.com
@@ -195,8 +237,8 @@ The engine is open. The fuel is yours:
 
 ```bash
 pip install -e ".[ashare]"
-radar score --ashare --limit 200        # try it on a slice first
-radar score --ashare                    # the whole market, ~20-40 min
+ma-engine score --ashare --limit 200        # try it on a slice first
+ma-engine score --ashare                    # the whole market, ~20-40 min
 ```
 
 It reads four public sources: the listed-company universe, the

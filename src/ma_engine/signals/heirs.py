@@ -13,9 +13,9 @@ says exactly what was checked so a person can verify it.
 
 from __future__ import annotations
 
-from succession_radar.adapters.base import Company
-from succession_radar.signals import Signal
-from succession_radar.signals.age import estimate_age, split_name
+from ma_engine.adapters.base import Company
+from ma_engine.signals import Signal
+from ma_engine.signals.age import estimate_age, split_name
 
 
 def heir_absence_signal(company: Company) -> Signal:

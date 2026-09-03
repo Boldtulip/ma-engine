@@ -24,7 +24,7 @@ from __future__ import annotations
 import os
 from typing import Iterable
 
-from succession_radar.adapters.base import Adapter, Company
+from ma_engine.adapters.base import Adapter, Company
 
 
 class QccAdapter(Adapter):

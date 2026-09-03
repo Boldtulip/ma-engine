@@ -15,8 +15,8 @@ from pathlib import Path
 
 import yaml
 
-from succession_radar.adapters.base import Company
-from succession_radar.signals import Signal, compute_all
+from ma_engine.adapters.base import Company
+from ma_engine.signals import Signal, compute_all
 
 DEFAULT_WEIGHTS = Path(__file__).parent / "weights.yaml"
 
