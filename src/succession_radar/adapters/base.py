@@ -43,7 +43,18 @@ class Company:
     source: str = ""              # which adapter produced this record
 
     def controller(self) -> Optional[Person]:
-        """The largest individual shareholder, or the legal rep as fallback."""
+        """The person the succession analysis is about.
+
+        Where the records name an actual controller (实际控制人), that
+        person wins outright — a large institutional shareholder is not
+        the owner in the sense that matters here. Otherwise fall back
+        to the largest individual shareholder, then the legal
+        representative.
+        """
+        named = [s for s in self.shareholders
+                 if not s.is_company and "实际控制人" in s.role]
+        if named:
+            return max(named, key=lambda p: p.ownership_pct)
         people = [s for s in self.shareholders if not s.is_company]
         if people:
             return max(people, key=lambda p: p.ownership_pct)

@@ -122,14 +122,47 @@ them like data, not like code.
 The engine is open. The fuel is yours:
 
 - **Bundled synthetic data** — works instantly, every name fictional.
-- **A-share disclosures** — listed companies must disclose executives'
-  exact ages; this is the one segment with clean public age data.
-  Adapter in progress.
+- **A-share disclosures** — `radar score --ashare`. Listed companies
+  must publish their chairman's exact age, so this is the one segment
+  where the most important signal is a fact rather than an estimate.
+  Free, public, no credentials. See below.
 - **Your CSV** — `radar score --csv yourfile.csv` with your own
   research.
 - **QCC official API** (`adapters/qcc.py`) — the private-company path.
   Requires your own corporate-verified credentials on openapi.qcc.com
   (or qcckyc.com outside mainland China).
+
+### The A-share adapter
+
+```bash
+pip install -e ".[ashare]"
+radar score --ashare --limit 200        # try it on a slice first
+radar score --ashare                    # the whole market, ~20-40 min
+```
+
+It reads four public sources: the listed-company universe, the
+chairman's disclosed age and appointment date, the actual controller
+(实际控制人), and the weekly equity-pledge file. It then keeps only the
+privately controlled companies — ownership type is not published as a
+field anywhere, so it is inferred from the controller's name, the same
+convention the academic databases use.
+
+Real output from a live run:
+
+```
+  #  score  company        owner     signal summary
+  1     52  丽珠集团        朱保国     朱保国 is 64 years old (disclosed).
+  2     50  深华发A         李中秋     李中秋 is 62 years old (disclosed).
+  3     40  胜利股份        许铁良     许铁良 is 63 years old (disclosed).
+```
+
+**One implementation note worth knowing if you work from outside
+China.** These endpoints are not geo-blocked, but opening a new TLS
+connection to them from abroad costs around forty seconds, while
+reusing an open one costs a fraction of a second. The adapter keeps
+one persistent session per worker thread. This is also why the obvious
+library wrappers appear to hang from abroad: they open a fresh
+connection for every call.
 
 ## Legal and ethical boundaries
 
@@ -148,7 +181,11 @@ This project draws a hard line, on purpose:
 
 ## Roadmap
 
-- [ ] A-share adapter with the scored dataset of listed private companies
+- [x] A-share adapter reading live public disclosures
+- [ ] Ship the scored dataset of listed private companies
+- [ ] Resolve controllers held through intermediate holding companies
+      (today those fall into "other legal person" rather than being
+      traced up the chain)
 - [ ] Full ChineseNames cohort integration
 - [ ] QCC adapter reference implementation
 - [ ] Buyer-side matching against a real acquirer universe

@@ -8,3 +8,6 @@ venv/
 .env
 output/
 .pytest_cache/
+data/*.log
+data/full_scan_log.txt
+data/ashare_sample.json

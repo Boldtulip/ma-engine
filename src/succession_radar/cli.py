@@ -20,9 +20,18 @@ from succession_radar.matching.matcher import match_buyers
 from succession_radar.scoring.engine import rank
 
 
+DEFAULT_CACHE = Path("data/ashare_scored.json")
+
+
 def _load(args: argparse.Namespace) -> list[Company]:
     if getattr(args, "csv", None):
         return list(CsvAdapter(args.csv).companies())
+    if getattr(args, "ashare", False):
+        from succession_radar.adapters.ashare import AShareAdapter
+
+        cache = getattr(args, "cache", None) or DEFAULT_CACHE
+        return list(AShareAdapter(limit=getattr(args, "limit", None),
+                                  cache_path=cache).companies())
     return list(DummyAdapter(n=args.n).companies())
 
 
@@ -30,12 +39,13 @@ def _print_ranking(companies: list[Company], top: int) -> None:
     reports = rank(companies)
     print(f"\nScreened {len(reports)} companies. "
           f"Top {top} by succession score:\n")
-    print(f"{'#':>3}  {'score':>5}  {'company':<28} {'owner':<10} {'signal summary'}")
-    print("-" * 100)
+    print(f"{'#':>3}  {'score':>5}  {'company':<24} {'owner':<12} {'signal summary'}")
+    print("-" * 110)
     for i, r in enumerate(reports[:top], 1):
         strongest = max(r.signals, key=lambda s: r.contributions.get(s.key, 0))
-        print(f"{i:>3}  {r.total:>5.0f}  {r.company.name:<28} "
-              f"{r.company.legal_rep:<10} {strongest.reason}")
+        owner = r.company.controller()
+        print(f"{i:>3}  {r.total:>5.0f}  {r.company.name:<24} "
+              f"{(owner.name if owner else '—'):<12} {strongest.reason}")
     print()
     best = reports[0]
     print("Strongest candidate in detail:\n")
@@ -79,8 +89,14 @@ def main() -> None:
     p_demo.add_argument("--top", type=int, default=15)
     p_demo.set_defaults(func=cmd_demo)
 
-    p_score = sub.add_parser("score", help="rank companies from a CSV")
-    p_score.add_argument("--csv", required=True)
+    p_score = sub.add_parser("score", help="rank companies from a CSV or A-shares")
+    p_score.add_argument("--csv", help="score companies from your own CSV")
+    p_score.add_argument("--ashare", action="store_true",
+                         help="score listed private companies from public "
+                              "disclosures (free, no credentials)")
+    p_score.add_argument("--limit", type=int,
+                         help="only process the first N listed companies")
+    p_score.add_argument("--cache", help="path to the A-share cache file")
     p_score.add_argument("--n", type=int, default=200)
     p_score.add_argument("--top", type=int, default=15)
     p_score.set_defaults(func=cmd_score)
@@ -88,6 +104,10 @@ def main() -> None:
     p_doss = sub.add_parser("dossier", help="full dossier for one company")
     p_doss.add_argument("--name", required=True, help="company name or part of it")
     p_doss.add_argument("--csv", help="optional CSV source; default is demo data")
+    p_doss.add_argument("--ashare", action="store_true",
+                        help="use listed-company data")
+    p_doss.add_argument("--limit", type=int)
+    p_doss.add_argument("--cache", help="path to the A-share cache file")
     p_doss.add_argument("--n", type=int, default=200)
     p_doss.add_argument("--no-llm", action="store_true",
                         help="skip the LLM even if a key is configured")

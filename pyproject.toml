@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-ashare = ["akshare>=1.14", "pandas>=2.0"]
+ashare = ["requests>=2.31"]
 llm = ["anthropic>=0.40"]
 dev = ["pytest>=8.0"]
 
