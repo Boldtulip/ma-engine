@@ -1,4 +1,4 @@
-"""QCC (企查查) adapter — bring your own credentials.
+"""QCC (企查查) adapter, bring your own credentials.
 
 This adapter shows the shape of the private-company data path. It
 calls the official QCC open platform (openapi.qcc.com), which

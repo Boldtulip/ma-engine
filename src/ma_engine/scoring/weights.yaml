@@ -4,7 +4,7 @@
 # prior: the owner's age matters most, then whether a successor is
 # visible, then how long the owner has held the company, then
 # financial pressure. They are NOT calibrated. Calibration requires
-# outcome data — which companies actually sold — and that data is
+# outcome data on which companies actually sold, and that data is
 # exactly what a practitioner accumulates and this repository does
 # not ship.
 

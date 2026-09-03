@@ -8,13 +8,13 @@ companies, estimates which owners are approaching succession without a
 successor, scores every company with checkable reasons, and drafts the
 first deal documents a banker would write.
 
-China's first generation of private entrepreneurs — the founders of the
-1980s and 1990s — is reaching retirement age at the same time. Research
+China's first generation of private entrepreneurs, the founders of the
+1980s and 1990s, is reaching retirement age at the same time. Research
 groups estimate that **over 3 million private companies** will face a
 succession decision within ten years, and in surveys a large share of
 the second generation says it does not want to take over. Japan went
-through the same transition ten years earlier, and deal *sourcing* —
-finding the companies before anyone else — turned out to be the
+through the same transition ten years earlier, and deal *sourcing*
+(finding the companies before anyone else) turned out to be the
 bottleneck of the entire market. This project is the sourcing layer,
 open-sourced.
 
@@ -22,39 +22,32 @@ open-sourced.
   <img src="docs/demo.svg" alt="ma-engine ranking listed Chinese private companies by succession risk, with the reasons for each score" width="880">
 </p>
 
-## What it found
+## What it runs on
 
-Running the engine across every company listed in China, using nothing
-but the companies' own public filings:
+The engine is source agnostic. It ships with synthetic demo data so it
+runs immediately, and it reads real companies through three other
+adapters.
 
-| | |
-|---|---:|
-| Privately controlled listed companies | **3,576** |
-| Owners whose exact age is disclosed | **2,803** |
-| Owners aged 60 or over | **1,249** |
-| Owners aged 70 or over | **235** |
-| Companies with no successor visible in the records | **1,397** (39%) |
-| Median owner age | **58** |
-
-Ages are taken from the companies' own filings. Where the same filing
-also states a birth year in the biography text, the two agree: checked
-across the oldest owners in the set, every case with both fields
-matched exactly.
-
-**This repository ships no real-company data.** The numbers above are
-the result of a run, reported as a finding; the scored table itself
-names living individuals next to an algorithmic score, so it is not
-distributed here. Reproduce it in about half an hour on your own
-machine, from the same public filings:
+The one that needs no credentials is the A-share adapter. Companies
+listed in China must publish their chairman's exact age in their own
+filings, which makes listed companies the only population where the
+most important signal is a disclosed fact rather than an estimate.
+Point the engine at that population and it screens the whole market in
+about half an hour:
 
 ```bash
-ma-engine score --ashare            # builds the table locally
-ma-engine export --ashare           # writes CSV + a ranked watchlist
+ma-engine score --ashare            # builds the ranked table locally
+ma-engine export --ashare           # writes a CSV and a watchlist
 ```
 
-These are listed companies, so this is the visible tip of the problem.
-The same signals apply to the roughly 50 million private companies that
-publish far less — which is what the other adapters are for.
+**This repository publishes no data about real companies or people.**
+That output names living individuals next to an algorithmic score, so
+it belongs on your machine, not in a public repository. Everything
+committed here is synthetic.
+
+Listed companies are in any case the visible tip of the problem. The
+same signals apply to the roughly 50 million private companies that
+publish far less, which is what the other adapters are for.
 
 ```mermaid
 flowchart LR
@@ -99,7 +92,7 @@ flowchart LR
 
 The engine is open. **The fuel is not.** Credentials, calibrated
 weights, and your record of which companies actually sold stay on your
-side — which is why cloning this repository gives you the machine, not
+side, which is why cloning this repository gives you the machine, not
 the advantage.
 
 ## Quickstart
@@ -135,7 +128,7 @@ without one, a deterministic template version is produced.
 ## How the scoring works
 
 Chinese registries publish shareholder names, capital, and change
-records — but **not ages**. The engine works around that gap with
+records, but **not ages**. The engine works around that gap with
 signals that are all computable from public data:
 
 | Signal | What it reads | Example reason it produces |
@@ -166,9 +159,9 @@ straightforward to sell.
 
 So the curve peaks between roughly 63 and 72 and declines after that,
 without ever going to zero. In the live data this is the difference
-between a top-20 list led by owners of 80, 82 and 87 — the rarest and
-least reachable cases, 0.9% of the population — and one led by owners
-of 62 to 70, which is where the deals are.
+between a top-20 list led by owners of 80, 82 and 87 (the rarest and
+least reachable cases, under 1% of the population) and one led by
+owners of 62 to 70, which is where the deals are.
 
 The anchor points are judgment, not measurement. They are in
 `signals/age.py`, they are meant to be argued with, and the right way
@@ -176,8 +169,8 @@ to settle the argument is to calibrate them against your own record of
 which companies actually sold.
 
 The weights in `scoring/weights.yaml` are **illustrative defaults**.
-Calibrating them requires outcome data — which companies actually
-sold — and that data is what a practitioner accumulates over time. It
+Calibrating them requires outcome data on which companies actually
+sold, and that data is what a practitioner accumulates over time. It
 is not in this repository.
 
 The bundled name-cohort table is a small demonstration subset. For
@@ -189,30 +182,30 @@ birth-year distributions for 1.2 billion people, 1930–2008).
 The `knowledge/` folder encodes how a China M&A professional thinks,
 as plain data files the LLM reads and any person can audit:
 
-- **`buyers_china.yaml`** — who buys private SMEs in China: listed
+- **`buyers_china.yaml`** covers who buys private SMEs in China: listed
   companies, industrial M&A funds, local state platforms, search
-  funds, trade buyers, foreign strategics — each with motives,
+  funds, trade buyers, foreign strategics, each with motives,
   preferences, and constraints.
-- **`fit_criteria.yaml`** — what makes a target good, and the red
+- **`fit_criteria.yaml`** covers what makes a target good, and the red
   flags that kill deals in diligence.
-- **`deal_structures.yaml`** — the deal shapes that fit succession
+- **`deal_structures.yaml`** covers the deal shapes that fit succession
   sales, from majority-with-transition to fund SPV structures.
-- **`origination_playbook.yaml`** — how professional sourcing works:
+- **`origination_playbook.yaml`** covers how professional sourcing works:
   buyer-list tiering, seller-intent signals, documented outreach
   funnel benchmarks, and the canonical teaser and target-profile
   formats.
-- **`valuation_heuristics.yaml`** — SME multiples by size, the size
+- **`valuation_heuristics.yaml`** covers SME multiples by size, the size
   discount, key-man discounts, and standard structure parameters
   (rollover, seller notes, earnouts).
-- **`seller_economics.yaml`** — what the founder actually walks away
+- **`seller_economics.yaml`** covers what the founder actually walks away
   with: the 20% individual income tax on share transfers, when the
   authorities assess the price themselves, who withholds, and the
-  asymmetry that decides post-closing risk — a performance
+  asymmetry that decides post-closing risk: a performance
   undertaking given by the founder personally is fully enforceable,
   while one given by the company often is not.
 
-Every number in these files carries a confidence tag — well-sourced,
-medium, or heuristic — so the model and the reader both know how much
+Every number in these files carries a confidence tag of well-sourced,
+medium, or heuristic, so the model and the reader both know how much
 weight it deserves.
 
 To run the engine against your own knowledge base instead of the
@@ -229,14 +222,14 @@ them like data, not like code.
 
 The engine is open. The fuel is yours:
 
-- **Bundled synthetic data** — works instantly, every name fictional.
-- **A-share disclosures** — `ma-engine score --ashare`. Listed companies
+- **Bundled synthetic data.** Works instantly, every name fictional.
+- **A-share disclosures**, `ma-engine score --ashare`. Listed companies
   must publish their chairman's exact age, so this is the one segment
   where the most important signal is a fact rather than an estimate.
   Free, public, no credentials. See below.
-- **Your CSV** — `ma-engine score --csv yourfile.csv` with your own
+- **Your CSV**, `ma-engine score --csv yourfile.csv` with your own
   research.
-- **QCC official API** (`adapters/qcc.py`) — the private-company path.
+- **QCC official API** (`adapters/qcc.py`), the private-company path.
   Requires your own corporate-verified credentials on openapi.qcc.com
   (or qcckyc.com outside mainland China).
 
@@ -251,14 +244,14 @@ ma-engine score --ashare                    # the whole market, ~20-40 min
 It reads four public sources: the listed-company universe, the
 chairman's disclosed age and appointment date, the actual controller
 (实际控制人), and the weekly equity-pledge file. It then keeps only the
-privately controlled companies — ownership type is not published as a
-field anywhere, so it is inferred from the controller's name, the same
-convention the academic databases use.
+privately controlled companies. Ownership type is not published as a
+field anywhere, so it is inferred from the controller's name, which is
+the convention the academic databases use.
 
-Real output from a live full-market run:
+Output from the bundled demo (synthetic companies):
 
 ```
-MA Engine — demo on synthetic data.
+MA Engine, demo on synthetic data.
 Every company and person below is fictional.
 
   #  score  company                owner    signal summary
@@ -287,7 +280,7 @@ This project draws a hard line, on purpose:
    for scraping registry and platform data behind anti-bot measures,
    and rejected "it was already public" as a defense. The only
    private-company data path this project supports is the official,
-   licensed API — with your own credentials.
+   licensed API, with your own credentials.
 2. **Estimates are labeled as estimates.** An age inferred from a name
    is a probability, not a fact, and every output says so.
 3. **No personal data is distributed.** The repository ships synthetic

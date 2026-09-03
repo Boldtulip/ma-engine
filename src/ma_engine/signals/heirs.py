@@ -2,7 +2,7 @@
 
 In Chinese family companies, a successor almost always appears in the
 public records before taking over: as a shareholder, a director, or a
-supervisor — and almost always shares the founder's surname. If no
+supervisor, and almost always shares the founder's surname. If no
 younger person with the founder's surname holds any position or
 shares, the company has no visible successor.
 
@@ -53,7 +53,7 @@ def heir_absence_signal(company: Company) -> Signal:
             return Signal(
                 "heir_absence", 0.1, 0.6,
                 f"{p.name} ({p.role or 'on record'}) shares surname {surname} and is "
-                f"roughly a generation younger — a likely successor.",
+                f"roughly a generation younger, so a likely successor.",
             )
 
     names = ", ".join(p.name for p in same_surname[:3])

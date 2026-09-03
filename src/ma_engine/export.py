@@ -71,7 +71,7 @@ def _heading(reports: list[ScoreReport]) -> tuple[str, str]:
     source = reports[0].company.source if reports else ""
     if source.startswith("ashare"):
         return (
-            "Succession watchlist — listed private companies in China",
+            "Succession watchlist, listed private companies in China",
             "Scored from companies' own public disclosures. Ages marked as "
             "disclosed come from those filings; any others are estimates and "
             "are labelled. A high score means a professional should look here "
@@ -79,7 +79,7 @@ def _heading(reports: list[ScoreReport]) -> tuple[str, str]:
         )
     if source.startswith("dummy"):
         return (
-            "Succession watchlist — demonstration data",
+            "Succession watchlist, demonstration data",
             "Every company and person below is fictional, generated to "
             "demonstrate the scoring. Ages are estimated from given names. "
             "Nothing here refers to a real business.",
@@ -106,8 +106,8 @@ def write_markdown(reports: list[ScoreReport], path: str | Path,
     ]
     for i, report in enumerate(reports[:top], 1):
         r = _row(i, report)
-        age = f"{r['owner_age']}" if r["owner_age"] != "" else "—"
-        if r["age_source"] == "estimated" and age != "—":
+        age = f"{r['owner_age']}" if r["owner_age"] != "" else ", "
+        if r["age_source"] == "estimated" and age != ", ":
             age += "*"
         lines.append(
             f"| {i} | {r['score']} | {r['company']} | {r['owner']} | {age} | "

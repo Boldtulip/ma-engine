@@ -7,7 +7,7 @@
 <circle cx="58" cy="17" r="5.5" fill="#28c840"/>
 <text x="450" y="22" fill="#8b949e" font-size="12" text-anchor="middle">ma-engine</text>
 <text x="22" y="46" fill="#7d8590" xml:space="preserve">$ ma-engine demo</text>
-<text x="22" y="88" fill="#d29922" xml:space="preserve">MA Engine — demo on synthetic data.</text>
+<text x="22" y="88" fill="#d29922" xml:space="preserve">MA Engine, demo on synthetic data.</text>
 <text x="22" y="109" fill="#d29922" xml:space="preserve">Every company and person below is fictional.</text>
 <text x="22" y="151" fill="#c9d1d9" xml:space="preserve">Screened 400 companies. Top 7 by succession score:</text>
 <text x="22" y="193" fill="#8b949e" font-weight="600" xml:space="preserve">  #  score  company                owner    signal summary</text>
@@ -18,7 +18,7 @@
 <text x="22" y="298" fill="#c9d1d9" xml:space="preserve">  4     58  江苏昌盛塑料有限公司   马建国   only person in the shareholder and executive records.</text>
 <text x="22" y="319" fill="#c9d1d9" xml:space="preserve">  5     58  广东永恒包装有限公司   袁和平   only person in the shareholder and executive records.</text>
 <text x="22" y="361" fill="#c9d1d9" xml:space="preserve">Strongest candidate in detail:</text>
-<text x="22" y="403" fill="#e6edf3" font-weight="600" xml:space="preserve">浙江昌泰建材有限公司 — succession score 59/100</text>
+<text x="22" y="403" fill="#e6edf3" font-weight="600" xml:space="preserve">浙江昌泰建材有限公司, succession score 59/100</text>
 <text x="22" y="424" fill="#3fb950" xml:space="preserve">  [+19.2] 丁凤英 is estimated around 71 years old.</text>
 <text x="22" y="445" fill="#3fb950" xml:space="preserve">  [+18.0] 丁凤英 has held the role for 35 years (since 1991).</text>
 <text x="22" y="466" fill="#3fb950" xml:space="preserve">  [+16.2] No other person on record shares the owner&#x27;s surname 丁.</text>

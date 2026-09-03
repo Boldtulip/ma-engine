@@ -45,7 +45,7 @@ def _print_ranking(companies: list[Company], top: int) -> None:
         strongest = max(r.signals, key=lambda s: r.contributions.get(s.key, 0))
         owner = r.company.controller()
         print(f"{i:>3}  {r.total:>5.0f}  {r.company.name:<24} "
-              f"{(owner.name if owner else '—'):<12} {strongest.reason}")
+              f"{(owner.name if owner else ', '):<12} {strongest.reason}")
     print()
     best = reports[0]
     print("Strongest candidate in detail:\n")
@@ -56,7 +56,7 @@ def _print_ranking(companies: list[Company], top: int) -> None:
 
 
 def cmd_demo(args: argparse.Namespace) -> None:
-    print("MA Engine — demo on synthetic data.")
+    print("MA Engine, demo on synthetic data.")
     print("Every company and person below is fictional.")
     _print_ranking(_load(args), args.top)
     print("\nNext: `ma-engine dossier --name <company>` writes the full dossier.")

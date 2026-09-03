@@ -5,7 +5,7 @@
 # module reads this file to build a buyer shortlist with a written
 # rationale. Edit or extend it like data, not like code.
 #
-# v1 — drafted from published market research; figures are indicative.
+# v1, drafted from published market research; figures are indicative.
 
 buyers:
   - key: listed_company
@@ -56,7 +56,7 @@ buyers:
     name_en: Industrial M&A fund (control-oriented PE)
     motive: >
       Buy control, improve the company for two to four years, then sell
-      it on — usually into a listed company. The common structure is a
+      it on, usually into a listed company. The common structure is a
       limited partnership with a local state platform or guidance fund
       as anchor investor and a private fund manager running it.
     prefers:
@@ -76,7 +76,7 @@ buyers:
       warning: >
         This category is smaller than it looks for an SME seller. The
         named Chinese control deals of 2024-2026 cluster at equity
-        cheques of 450M to 1.6bn — 启明创投 took control of 天迈科技 for
+        cheques of 450M to 1.6bn, 启明创投 took control of 天迈科技 for
         roughly 450-500M, 奇瑞's fund paid 1.575bn for 25% of 鸿合科技,
         晨壹投资 paid 1.2bn for 乐橙. Name-brand control PE is pointed
         at listed-company control and larger private platforms, not at
@@ -85,8 +85,7 @@ buyers:
       confidence: well_sourced
     evidence:
       - >-
-        启明创投 taking control of 天迈科技 is the reference precedent —
-        widely described as the first private-fund takeover after the
+        启明创投 taking control of 天迈科技 is the reference precedent, widely described as the first private-fund takeover after the
         September 2024 reform. Control was announced in January 2025
         and completed in January 2026, with the first bolt-on
         acquisition following within months.
@@ -107,8 +106,7 @@ buyers:
     name_en: Local state-owned platform
     motive: >
       Keep employment, tax revenue, and industrial chains inside the
-      jurisdiction. Buying control is a form of investment promotion —
-      the platform acquires a company in order to anchor or relocate
+      jurisdiction. Buying control is a form of investment promotion, the platform acquires a company in order to anchor or relocate
       the supply chain in its own city. Rescuing a distressed local
       champion and capturing hard-technology assets are the other two
       standing motives. State platforms have become the de facto buyer
@@ -138,7 +136,7 @@ buyers:
         one unless the seller has put a defensible income model in
         front of them first.
       what_prices_well: land, buildings, equipment, patents
-      what_prices_badly: goodwill, brand, customer relationships — so
+      what_prices_badly: goodwill, brand, customer relationships, so
         asset-light service companies are systematically underpaid by
         state buyers relative to trade buyers
       timing: the appraisal and filing chain adds six to twelve weeks
@@ -230,7 +228,7 @@ buyers:
     seller_insight: >
       Practitioners in this niche say owners will accept a searcher
       provided the searcher can explain the non-price part of the
-      offer — what happens to the staff, the name, and the founder's
+      offer, what happens to the staff, the name, and the founder's
       legacy. That is the whole pitch.
     confidence: well_sourced
 
@@ -259,14 +257,13 @@ buyers:
         exist nationally and no new ones are issued, so consolidation
         happens entirely through M&A.
       - >-
-        通领科技 published a textbook statement of trade-buyer intent —
-        a plan to acquire upstream raw material suppliers, peer
+        通领科技 published a textbook statement of trade-buyer intent, a plan to acquire upstream raw material suppliers, peer
         capacity in auto interiors, smart-cockpit processes, and
         overseas local suppliers, to complete its supply chain and
         expand customers and capacity.
       - >-
         菲沃泰 took 35% of its supplier 东莞科盛机电 for 138M to secure
-        core component supply — the vertical variant.
+        core component supply, the vertical variant.
     confidence: well_sourced
 
   - key: foreign_strategic
@@ -294,7 +291,7 @@ buyers:
           The 2024 edition of the foreign investment negative list, in
           force since 1 November 2024, contains 29 items and removed
           the last manufacturing restrictions entirely. Remaining
-          restrictions cover services only — telecoms, internet,
+          restrictions cover services only, telecoms, internet,
           education, culture, and medical services.
         meaning: there is no longer any negative-list bar to a foreign
           buyer taking 100% of a Chinese manufacturing company
@@ -307,16 +304,16 @@ buyers:
         meaning: >
           The 800M each-of-two limb is the gate. A target with less than
           800M of China revenue never triggers a filing, however large
-          the buyer. Most SMEs are structurally out of scope — but the
+          the buyer. Most SMEs are structurally out of scope, but the
           regulator can still call in a below-threshold deal, and has
           done so.
         confidence: well_sourced
       security_review:
         fact: >
           Any investment in defence-related fields triggers review with
-          no control test. In other listed sensitive fields — critical
+          no control test. In other listed sensitive fields, critical
           technology, important equipment manufacturing, energy,
-          agriculture, infrastructure, information technology — review
+          agriculture, infrastructure, information technology, review
           is triggered only where the foreign investor acquires actual
           control, defined as more than 50% of equity, or less with
           decisive influence over the board.
@@ -359,8 +356,7 @@ market_reality:
   valuation_discipline:
     fact: >
       The regulator now polices price. In August 2026 科达制造's 7.475bn
-      purchase was rejected — the first such rejection after 并购六条 —
-      because the target's price-to-book of 3.20x sat far above the
+      purchase was rejected, the first such rejection after 并购六条, because the target's price-to-book of 3.20x sat far above the
       1.53x of comparable companies and the 1.77x average of twelve
       precedent deals, and a 219.5% appraisal uplift was unsupported
       by roughly 10% revenue growth.
@@ -368,7 +364,7 @@ market_reality:
       An unrealistic asking price does not just lose a buyer, it can
       lose regulatory approval. Deals are also terminated outright
       over valuation disagreement, and prices get cut hard between
-      buyers — 富的旺旺's valuation halved within a week.
+      buyers, 富的旺旺's valuation halved within a week.
     confidence: well_sourced
 
   observed_multiples:
@@ -395,7 +391,7 @@ market_reality:
         at closing; another used an interest-bearing good-faith
         deposit of 20%.
       - >-
-        Two-step control purchases are increasingly used — a small
+        Two-step control purchases are increasingly used, a small
         first tranche for 51%, with the second step triggered only if
         the target hits revenue and profit targets.
       - >-
@@ -410,7 +406,7 @@ market_reality:
       over 460M in earnout compensation from a counterparty with few
       executable assets.
     meaning: >
-      For a selling founder the mirror risk is worse — an earnout is
+      For a selling founder the mirror risk is worse, an earnout is
       only as good as the buyer's willingness to pay it. Cash at
       closing is worth materially more than promised consideration.
     confidence: well_sourced

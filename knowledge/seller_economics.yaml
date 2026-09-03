@@ -120,8 +120,7 @@ performance_undertakings:
 seller_protection_checklist:
   # What an adviser insists on before signing.
   - Cash at closing is worth materially more than promised
-    consideration. Earnout compensation is frequently uncollectable —
-    one listed buyer is owed over 460M from a counterparty with no
+    consideration. Earnout compensation is frequently uncollectable, one listed buyer is owed over 460M from a counterparty with no
     executable assets, and the mirror risk falls on sellers too.
   - Personal guarantees on company debt must be released at closing or
     expressly assumed, in writing, by the buyer.

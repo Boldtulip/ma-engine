@@ -3,7 +3,7 @@
 Always produces a readable markdown dossier from templates. If the
 `anthropic` package is installed and an API key is available, Claude
 writes the full analyst version on top of the same facts. Without a
-key, the template version stands on its own — the demo must never
+key, the template version stands on its own. The demo must never
 require credentials.
 """
 
@@ -52,7 +52,7 @@ def template_dossier(report: ScoreReport, matches: list[BuyerMatch]) -> str:
 
     lines += ["", "## Buyer shortlist", ""]
     for i, m in enumerate(matches, 1):
-        lines.append(f"{i}. **{m.name}** — fit {m.fit:.0%}. {m.rationale}.")
+        lines.append(f"{i}. **{m.name}**, fit {m.fit:.0%}. {m.rationale}.")
 
     lines += ["", "## What the seller should know", ""]
     for note in _seller_notes():
@@ -101,7 +101,7 @@ def llm_dossier(report: ScoreReport, matches: list[BuyerMatch],
         company_json=json.dumps(dataclasses.asdict(c), ensure_ascii=False, indent=1),
         score=f"{report.total:.0f}",
         score_explanation=report.explain(),
-        buyer_ranking="\n".join(f"- {m.name}: fit {m.fit:.0%} — {m.rationale}"
+        buyer_ranking="\n".join(f"- {m.name}: fit {m.fit:.0%}, {m.rationale}"
                                 for m in matches),
     )
     try:

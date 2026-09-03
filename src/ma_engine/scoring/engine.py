@@ -4,7 +4,7 @@ It combines the signals into one succession score from 0 to 100 and
 keeps every reason, so each score can be read back as a short list of
 checkable sentences. A signal only moves the score as far as its
 confidence allows: an age estimated from a name counts for about half
-of a disclosed age. Missing data pulls a score down, never up — the
+of a disclosed age. Missing data pulls a score down, never up, the
 engine prefers to under-rank a company than to invent certainty.
 """
 
@@ -30,7 +30,7 @@ class ScoreReport:
 
     def explain(self) -> str:
         """The score as plain sentences, strongest driver first."""
-        lines = [f"{self.company.name} — succession score {self.total:.0f}/100"]
+        lines = [f"{self.company.name}, succession score {self.total:.0f}/100"]
         order = sorted(self.signals, key=lambda s: -self.contributions.get(s.key, 0))
         for s in order:
             pts = self.contributions.get(s.key, 0.0)

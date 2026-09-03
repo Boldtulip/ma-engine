@@ -4,7 +4,7 @@ age is public.
 Listed companies must disclose their directors' and executives' exact
 ages. That makes the roughly five thousand A-share companies the only
 population where this engine's most important signal can be read
-rather than estimated — and among them, the private, family-controlled
+rather than estimated. Among them, the private, family-controlled
 ones are real succession candidates. Over three hundred A-share
 private-company chairmen are already past 65.
 
@@ -42,7 +42,7 @@ BIRTH_RE = re.compile(r"(19\d{2}|20\d{2})\s*年.{0,3}出生")
 
 # Markers that identify a state-linked controlling entity. Ownership
 # type is not published as a field anywhere free, so it is inferred
-# from the name of the actual controller — the same convention the
+# from the name of the actual controller, the same convention the
 # academic databases use.
 STATE_PAT = re.compile(
     "国务院|国资委|国有资产监督管理|国有资产管理|财政部|财政局|"

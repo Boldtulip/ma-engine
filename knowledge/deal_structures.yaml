@@ -4,7 +4,7 @@
 # structured, so the output reads like a banker's memo rather than a
 # database row.
 #
-# v1 — drafted from published market practice; parameters are indicative.
+# v1, drafted from published market practice; parameters are indicative.
 
 structures:
   - key: majority_with_transition
@@ -30,7 +30,7 @@ structures:
       Slower, heavily documented, but payment is certain.
     fits: regionally important companies selling to 国资
   - key: spv_hold_improve_exit
-    name: Fund SPV — hold, improve, exit
+    name: Fund SPV, hold, improve, exit
     shape: >
       A fund vehicle (often state capital + private manager) buys 51%+,
       professionalizes management, and sells to a listed company within

@@ -1,7 +1,7 @@
 """Owner tenure: how long the same person has run the company.
 
 A legal representative unchanged since a founding thirty years ago
-means the founder still runs the business — and puts a floor under
+means the founder still runs the business, and puts a floor under
 their age even when the age itself is unknown. Change records
 (变更记录) are public in China, so this signal is computable.
 

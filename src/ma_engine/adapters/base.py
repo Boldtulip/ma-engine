@@ -46,8 +46,8 @@ class Company:
         """The person the succession analysis is about.
 
         Where the records name an actual controller (实际控制人), that
-        person wins outright — a large institutional shareholder is not
-        the owner in the sense that matters here. Otherwise fall back
+        person wins outright. A large institutional shareholder is not the
+        owner in the sense that matters here. Otherwise fall back
         to the largest individual shareholder, then the legal
         representative.
         """
