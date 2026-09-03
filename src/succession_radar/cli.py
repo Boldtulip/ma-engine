@@ -66,6 +66,18 @@ def cmd_score(args: argparse.Namespace) -> None:
     _print_ranking(_load(args), args.top)
 
 
+def cmd_export(args: argparse.Namespace) -> None:
+    from succession_radar import export
+
+    reports = rank(_load(args))
+    csv_path = export.write_csv(reports, args.csv_out)
+    md_path = export.write_markdown(reports, args.md_out, top=args.top)
+    print(f"\nWrote {len(reports)} scored companies to:")
+    print(f"  {csv_path}")
+    print(f"  {md_path}  (top {args.top})")
+    print("\n" + export.summarise(reports))
+
+
 def cmd_dossier(args: argparse.Namespace) -> None:
     companies = _load(args)
     hits = [c for c in companies if args.name in c.name]
@@ -100,6 +112,19 @@ def main() -> None:
     p_score.add_argument("--n", type=int, default=200)
     p_score.add_argument("--top", type=int, default=15)
     p_score.set_defaults(func=cmd_score)
+
+    p_exp = sub.add_parser("export", help="write the scored table and summary")
+    p_exp.add_argument("--ashare", action="store_true",
+                       help="use listed-company data")
+    p_exp.add_argument("--csv", help="score companies from your own CSV")
+    p_exp.add_argument("--cache", help="path to the A-share cache file")
+    p_exp.add_argument("--limit", type=int)
+    p_exp.add_argument("--n", type=int, default=200)
+    p_exp.add_argument("--top", type=int, default=50,
+                       help="rows in the markdown watchlist")
+    p_exp.add_argument("--csv-out", default="data/succession_watchlist.csv")
+    p_exp.add_argument("--md-out", default="data/succession_watchlist.md")
+    p_exp.set_defaults(func=cmd_export)
 
     p_doss = sub.add_parser("dossier", help="full dossier for one company")
     p_doss.add_argument("--name", required=True, help="company name or part of it")
