@@ -15,17 +15,41 @@ buyers:
       Buy profit and industry consolidation. Since the 并购六条 policy
       (September 2024), listed companies are encouraged to acquire,
       including across industries, and many need profitable targets to
-      support their own earnings.
+      support their own earnings. This is now the largest and most
+      active buyer group for private SMEs.
     prefers:
       - target is profitable, net profit above roughly 20 million CNY
-      - same industry chain or a plausible adjacency
+      - same industry chain or a plausible adjacency; over 60% of 2026
+        deals were horizontal consolidation or supply-chain integration
+      - a 专精特新 or "little giant" designation, which buyers pay up for
       - clean books that survive listed-company due diligence
     avoids:
       - heavy litigation or unclear ownership
       - targets too small to matter to a listed balance sheet
+      - valuations the regulator will reject (see market_reality below)
     payment: cash, shares, or a mix; can pay the highest multiple because
       listed valuations exceed private ones
     typical_stake: control (51-100%)
+    evidence:
+      # Verified deals, 2026. Sizes shown are in CNY.
+      - >-
+        远东股份 bought 80% of 惠州富的旺旺 (liquid-cooling plates, a
+        national 专精特新 "little giant") for 216M cash in August 2026.
+        The founder couple were 68 years old — a retirement-age exit.
+        The structure was a three-year earnout of 25M/30M/35M net
+        profit, implying roughly 9x forward earnings. One week earlier
+        another listed buyer had walked away at a valuation near 590M;
+        the price was cut by about half to get the deal done.
+      - >-
+        金钟股份 bought 合肥楷驰 (auto exterior trim) for 159M cash plus
+        25M for fixed assets. The stated motive was buying certified,
+        in-production OEM capacity rather than building it.
+      - >-
+        丰光精密 bought 51% of 北京唯实深蓝 (robotics) for 112M.
+      - >-
+        Premiums for scarce targets can run high. 星网锐捷 paid a 165%
+        premium and 高凌信息 a 272% premium for 专精特新 targets.
+    confidence: well_sourced
 
   - key: industrial_fund
     name_cn: 产业并购基金
@@ -84,14 +108,33 @@ buyers:
       A competitor, supplier, or customer buys capacity, customers, or
       certifications it already understands. Most SME deals in China
       close inside these existing relationships because trust already
-      exists.
+      exists. What they are really buying is usually one of four
+      things: certified production capacity that would take years to
+      replicate, a customer list, the land and plant, or a licence.
     prefers:
       - known counterparty, often in the same industrial cluster
       - assets it can integrate directly
+      - certifications already qualified with end customers
     avoids:
       - anything outside its own industry
     payment: cash, often installments; lowest multiples but fastest trust
     typical_stake: control or full buyout
+    evidence:
+      - >-
+        Licence-constrained industries make acquisition the only entry
+        route. In civil explosives, only about 40 production licences
+        exist nationally and no new ones are issued, so consolidation
+        happens entirely through M&A.
+      - >-
+        通领科技 published a textbook statement of trade-buyer intent —
+        a plan to acquire upstream raw material suppliers, peer
+        capacity in auto interiors, smart-cockpit processes, and
+        overseas local suppliers, to complete its supply chain and
+        expand customers and capacity.
+      - >-
+        菲沃泰 took 35% of its supplier 东莞科盛机电 for 138M to secure
+        core component supply — the vertical variant.
+    confidence: well_sourced
 
   - key: foreign_strategic
     name_cn: 外资战略买家
@@ -106,3 +149,78 @@ buyers:
       - deals that could trigger national-security review
     payment: cash, highest process standards, longest timeline
     typical_stake: control where the negative list allows it
+
+# How the market actually behaves. These are the constraints that
+# decide whether a deal closes at all, and they matter more to a
+# seller than the buyer taxonomy above.
+market_reality:
+  policy_backdrop:
+    fact: >
+      Since the 并购六条 reform of September 2024 through April 2026,
+      listed companies disclosed 3,422 asset restructurings, of which
+      336 were major. In the first seven months of 2026 there were
+      1,425 restructuring plans. More than 60% were horizontal
+      consolidation within a main business or vertical supply-chain
+      integration.
+    meaning: the buyer side is genuinely open; supply of good targets
+      is the constraint, not demand
+    confidence: well_sourced
+
+  valuation_discipline:
+    fact: >
+      The regulator now polices price. In August 2026 科达制造's 7.475bn
+      purchase was rejected — the first such rejection after 并购六条 —
+      because the target's price-to-book of 3.20x sat far above the
+      1.53x of comparable companies and the 1.77x average of twelve
+      precedent deals, and a 219.5% appraisal uplift was unsupported
+      by roughly 10% revenue growth.
+    meaning: >
+      An unrealistic asking price does not just lose a buyer, it can
+      lose regulatory approval. Deals are also terminated outright
+      over valuation disagreement, and prices get cut hard between
+      buyers — 富的旺旺's valuation halved within a week.
+    confidence: well_sourced
+
+  observed_multiples:
+    fact: >
+      Verified data points for unlisted industrial targets bought by
+      listed companies: about 9x promised forward net profit
+      (富的旺旺), about 13.6x contingent net profit (中瑞浩航), and
+      premiums to net assets ranging from 40% to 272% depending on
+      scarcity. The regulator treats a price-to-book above 3x as an
+      outlier against the 1.5-1.8x typical for industrial targets.
+    caution: >
+      The widely repeated claim that off-market succession sales of
+      unlisted factories clear at 3-6x earnings or near asset value is
+      practitioner lore, not verified. Treat it as a hypothesis.
+    confidence: well_sourced  # the multiples; the 3-6x claim is lore
+
+  payment_mechanics:
+    observed:
+      - >-
+        A three-year performance undertaking with the founder staying
+        on is the standard template.
+      - >-
+        Installments are common. One buyer paid 50% of consideration
+        at closing; another used an interest-bearing good-faith
+        deposit of 20%.
+      - >-
+        Two-step control purchases are increasingly used — a small
+        first tranche for 51%, with the second step triggered only if
+        the target hits revenue and profit targets.
+      - >-
+        Some buyers skip the earnout entirely and use a founder
+        non-compete plus share lockup instead (纳芯微 paid 1.0bn for
+        麦歌恩 on those terms).
+    confidence: well_sourced
+
+  earnout_risk_to_sellers_and_buyers:
+    fact: >
+      Performance compensation is often uncollectable. 精研科技 is owed
+      over 460M in earnout compensation from a counterparty with few
+      executable assets.
+    meaning: >
+      For a selling founder the mirror risk is worse — an earnout is
+      only as good as the buyer's willingness to pay it. Cash at
+      closing is worth materially more than promised consideration.
+    confidence: well_sourced
