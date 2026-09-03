@@ -15,6 +15,28 @@ finding the companies before anyone else — turned out to be the
 bottleneck of the entire market. This project is the sourcing layer,
 open-sourced.
 
+## What it found
+
+Running the engine across every company listed in China, using nothing
+but the companies' own public filings:
+
+| | |
+|---|---:|
+| Privately controlled listed companies | **3,576** |
+| Owners whose exact age is disclosed | **2,803** |
+| Owners aged 60 or over | **1,249** |
+| Owners aged 70 or over | **235** |
+| Companies with no successor visible in the records | **1,397** (39%) |
+| Median owner age | **58** |
+
+The scored table is in [`data/succession_watchlist.csv`](data/succession_watchlist.csv)
+and the top 100 in [`data/succession_watchlist.md`](data/succession_watchlist.md).
+Regenerate either at any time with `radar score --ashare`.
+
+These are listed companies, so this is the visible tip of the problem.
+The same signals apply to the roughly 50 million private companies that
+publish far less — which is what the other adapters are for.
+
 ```
  universe of companies          signals                output
 ┌─────────────────────┐   ┌─────────────────┐   ┌──────────────────────┐
@@ -154,13 +176,15 @@ privately controlled companies — ownership type is not published as a
 field anywhere, so it is inferred from the controller's name, the same
 convention the academic databases use.
 
-Real output from a live run:
+Real output from a live full-market run:
 
 ```
   #  score  company        owner     signal summary
-  1     52  丽珠集团        朱保国     朱保国 is 64 years old (disclosed).
-  2     50  深华发A         李中秋     李中秋 is 62 years old (disclosed).
-  3     40  胜利股份        许铁良     许铁良 is 63 years old (disclosed).
+  1     61  今创集团        俞金坤     俞金坤 is 83 years old (disclosed).
+  2     57  雷曼光电        王丽珊     王丽珊 is 81 years old (disclosed).
+  3     57  超图软件        钟耳顺     钟耳顺 is 70 years old (disclosed).
+  4     55  天润工业        邢运波     邢运波 is 78 years old (disclosed).
+  5     55  金鹰股份        傅国定     傅国定 is 81 years old (disclosed).
 ```
 
 **One implementation note worth knowing if you work from outside
@@ -189,7 +213,7 @@ This project draws a hard line, on purpose:
 ## Roadmap
 
 - [x] A-share adapter reading live public disclosures
-- [ ] Ship the scored dataset of listed private companies
+- [x] Scored dataset of 3,576 listed private companies
 - [ ] Resolve controllers held through intermediate holding companies
       (today those fall into "other legal person" rather than being
       traced up the chain)
