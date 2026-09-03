@@ -3,20 +3,25 @@
 [![tests](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-MA Engine is an open-source tool for finding acquisition targets in
-China. It takes a list of private companies, works out which owners
-are likely to be approaching retirement without a successor, gives
-each company a score with the reasons written out, and produces a
-short dossier with a buyer shortlist.
+MA Engine is an open-source tool for deal sourcing: finding companies
+that are likely to come up for sale before they are put on the market.
+It takes a list of companies, scores each one on signals that the
+owner may be heading towards a sale, writes out the reasons behind
+every score, and produces a short dossier with a buyer shortlist.
 
-The founders who started China's private companies in the 1980s and
-1990s are now reaching retirement age at the same time. Estimates put
-the number of private companies facing a succession decision in the
-next ten years at over three million, and in surveys a large share of
-the second generation says it does not want to take over. Japan went
-through the same transition about ten years earlier, and there the
-hard part turned out to be finding the companies before anyone else
-did. This project is that part.
+The data adapters, the signals, the scoring weights and the knowledge
+base are all separate, replaceable parts, so the engine can be pointed
+at any market. The version in this repository is set up for one
+example market, China, and runs on synthetic data.
+
+Why China as the example: the founders who started China's private
+companies in the 1980s and 1990s are reaching retirement age at the
+same time. Estimates put the number of private companies facing a
+succession decision in the next ten years at over three million, and
+in surveys a large share of the second generation says it does not
+want to take over. Japan went through the same transition about ten
+years earlier, and there the hard part turned out to be finding the
+companies before anyone else did. That is what this engine does.
 
 <p align="center">
   <img src="docs/demo.svg" alt="Terminal output of ma-engine demo: a ranked list of fictional companies with a succession score and a one-line reason for each" width="880">
@@ -52,29 +57,42 @@ seller's position, and the points we check before spending more time
 on a company. If `ANTHROPIC_API_KEY` is set, Claude writes the
 dossier; if not, a template version is produced from the same facts.
 
-## Data sources
+## Data
 
-The engine reads companies through adapters. All adapters produce the
-same records, so the scoring does not care where the data came from.
-Four are included:
+**This repository ships synthetic data only.** Every company and
+person in the bundled data is invented, and nothing about real
+companies or people is committed here.
 
-- **Synthetic demo data.** Bundled with the repository. Every company
-  and person in it is invented.
-- **A-share disclosures.** `ma-engine score --ashare`. Companies listed
-  in China must publish their chairman's age, so for listed companies
-  the most important signal is a disclosed fact rather than an
-  estimate. This source is free and needs no credentials. Details
-  below.
+The engine can read real company data through its adapters. If you
+do that, you are responsible for complying with the data-protection
+and other rules that apply to you and to the data, in whatever market
+you are working in. For the Chinese sources described below that
+includes the Personal Information Protection Law and the rules on
+moving data across borders. Any table the engine produces from real
+data names living individuals next to a score, and it belongs on the
+machine that generated it.
+
+### Adapters
+
+All adapters produce the same records, so the scoring does not care
+where the data came from. Four are included:
+
+- **Synthetic demo data.** Bundled with the repository.
 - **Your own CSV.** `ma-engine score --csv yourfile.csv`. The expected
-  columns are documented in `adapters/csv_adapter.py`.
-- **QCC official API.** `adapters/qcc.py`. This is the path for
-  unlisted private companies. It needs your own corporate-verified
+  columns are documented in `adapters/csv_adapter.py`. This is the
+  simplest way to use the engine on any market.
+- **A-share disclosures.** `ma-engine score --ashare`. An example
+  adapter for one real source: companies listed in China must publish
+  their chairman's age, so for them the most important signal is a
+  disclosed fact rather than an estimate. Free, no credentials.
+  Details below.
+- **QCC official API.** `adapters/qcc.py`. The shape of an adapter for
+  unlisted Chinese companies. It needs your own corporate-verified
   credentials on openapi.qcc.com, or on qcckyc.com from outside
   mainland China.
 
-This repository contains no data about real companies or people. The
-A-share adapter produces a table that names living individuals next to
-a score, and that table stays on the machine that generated it.
+To add a market, write an adapter that returns the `Company` records
+defined in `adapters/base.py`.
 
 ### The A-share adapter
 
@@ -103,9 +121,9 @@ a new connection for every call.
 
 ## How the scoring works
 
-Chinese company registries publish shareholder names, registered
-capital and change records, but not ages. The engine uses four signals
-that can all be computed from public data:
+The engine uses four signals. In the China example they are all
+computed from public records, which publish shareholder names,
+registered capital and change records, but not ages:
 
 | Signal | What it reads | Example of the reason it writes |
 |---|---|---|
@@ -146,10 +164,10 @@ ChineseNames database (Bao et al., birth-year distributions covering
 
 ## The knowledge base
 
-The `knowledge/` folder holds what the engine knows about M&A in China,
-as YAML files that the language model reads and that anyone can open
-and check. The matching module and the dossier use them, and nothing
-is in a prompt that is not also in these files.
+The `knowledge/` folder holds what the engine knows about M&A in the
+example market, as YAML files that the language model reads and that
+anyone can open and check. The matching module and the dossier use
+them, and nothing is in a prompt that is not also in these files.
 
 - `buyers_china.yaml` describes who buys private companies in China
   (listed companies, industrial M&A funds, local state platforms,
@@ -176,21 +194,25 @@ Every number in these files carries a confidence tag (well-sourced,
 medium, or heuristic) so that the reader and the model both know how
 much weight to give it.
 
-To use your own knowledge base instead of the bundled one, set
-`MA_ENGINE_KNOWLEDGE_DIR` to your folder.
+For another market, write your own set of files in the same shape and
+set `MA_ENGINE_KNOWLEDGE_DIR` to that folder.
 
 ## Rules the project follows
 
-1. **No scraping.** Chinese courts have convicted people for scraping
-   registry and platform data from behind anti-bot measures, and have
-   rejected the argument that the data was already public. The only
-   route to unlisted-company data that this project supports is the
-   official API, with your own credentials.
-2. **Estimates are marked as estimates.** An age inferred from a name
+1. **Synthetic data only in this repository.** Nothing about real
+   companies or people is distributed here.
+2. **Real data is the user's responsibility.** Whoever runs the engine
+   on real company data must comply with the rules that apply to them
+   and to that data. The project does not do this for you.
+3. **No scraping.** For the Chinese example, courts there have
+   convicted people for scraping registry and platform data from
+   behind anti-bot measures, and have rejected the argument that the
+   data was already public. The only route to unlisted-company data
+   that this project supports is an official API, with the user's own
+   credentials.
+4. **Estimates are marked as estimates.** An age inferred from a name
    is a probability, and every output says so.
-3. **No personal data is distributed.** The repository ships synthetic
-   data only.
-4. **Scores are not claims about people.** A score says where to look
+5. **Scores are not claims about people.** A score says where to look
    first. It does not say that anyone intends to sell, retire, or
    anything else.
 
@@ -202,6 +224,7 @@ To use your own knowledge base instead of the bundled one, set
 - [ ] Integrate the full ChineseNames cohort database.
 - [ ] Reference implementation of the QCC adapter.
 - [ ] Match against a real universe of acquirers, not only buyer types.
+- [ ] A second example market.
 
 ## License
 

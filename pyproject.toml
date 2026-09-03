@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ma-engine"
 version = "0.1.0"
-description = "An open-source M&A origination engine for China. It finds private companies whose owners are likely to sell, scores them, and drafts the first deal documents."
+description = "An open-source deal-sourcing engine. It scores companies on signals that the owner may be heading towards a sale, with the reasons written out, and drafts a dossier with a buyer shortlist. Ships with a China succession example on synthetic data."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
