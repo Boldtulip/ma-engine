@@ -103,6 +103,12 @@ as plain data files the LLM reads and any person can audit:
 - **`valuation_heuristics.yaml`** — SME multiples by size, the size
   discount, key-man discounts, and standard structure parameters
   (rollover, seller notes, earnouts).
+- **`seller_economics.yaml`** — what the founder actually walks away
+  with: the 20% individual income tax on share transfers, when the
+  authorities assess the price themselves, who withholds, and the
+  asymmetry that decides post-closing risk — a performance
+  undertaking given by the founder personally is fully enforceable,
+  while one given by the company often is not.
 
 Every number in these files carries a confidence tag — well-sourced,
 medium, or heuristic — so the model and the reader both know how much

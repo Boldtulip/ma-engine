@@ -64,29 +64,48 @@ def match_buyers(company: Company, knowledge: dict | None = None) -> list[BuyerM
                 reasons.append("litigation record would worry listed-company diligence")
 
         elif b["key"] == "industrial_fund":
-            if profit > 5 and revenue > 50:
+            # Control-oriented PE in China writes cheques of roughly
+            # 450M to 1.6bn. Below that the structure does not pay for
+            # itself, whatever the fit looks like on paper.
+            if revenue >= 300 and profit > 20:
                 fit += 0.25
-                reasons.append("stable size and profit fit the hold-improve-exit model")
+                reasons.append("large enough for a control fund to justify the "
+                               "structure, and sized for a later sale to a listed buyer")
+            else:
+                fit -= 0.35
+                reasons.append("below the size where China's control funds actually "
+                               "buy; their deals cluster far above this")
             if company.pledge_ratio > 0.5:
                 fit -= 0.2
                 reasons.append("a heavily pledged stake complicates a control purchase")
 
         elif b["key"] == "state_platform":
-            if "制造" in company.industry or "零部件" in company.industry:
+            asset_heavy = any(w in company.industry
+                              for w in ("制造", "零部件", "机械", "建材", "化工",
+                                        "五金", "纺织", "食品", "包装"))
+            if asset_heavy:
                 fit += 0.25
-                reasons.append("manufacturing with local employment is what "
-                               "state platforms exist to keep")
-            reasons.append("price will follow a formal appraisal; certainty is high, "
-                           "premium is not")
+                reasons.append("manufacturing with local employment and hard assets "
+                               "is what state platforms exist to keep")
+            else:
+                fit -= 0.15
+                reasons.append("asset-light value prices poorly against a formal "
+                               "appraisal")
+            reasons.append("expect the filed appraisal to cap the price and the "
+                           "approval chain to take four to nine months")
 
         elif b["key"] == "search_fund":
             if 30 <= revenue <= 200:
                 fit += 0.3
-                reasons.append(f"revenue of {revenue:.0f}M CNY sits in the classic "
+                reasons.append(f"revenue of {revenue:.0f}M CNY sits in the stated "
                                f"search-fund range")
             else:
                 fit -= 0.25
                 reasons.append("outside the size range a search fund can buy and run")
+            # Fit is not liquidity: no mainland search fund has closed
+            # a deal. Say so every time rather than flattering the rank.
+            reasons.append("but no search fund has completed a mainland acquisition "
+                           "to date, so treat this as fit, not as available money")
 
         elif b["key"] == "trade_buyer":
             fit += 0.2
@@ -100,6 +119,9 @@ def match_buyers(company: Company, knowledge: dict | None = None) -> list[BuyerM
             else:
                 fit -= 0.2
                 reasons.append("too small for a typical cross-border process")
+            if revenue < 800:
+                reasons.append("China revenue below 800M means no merger filing is "
+                               "triggered, and manufacturing carries no negative-list bar")
 
         matches.append(BuyerMatch(
             key=b["key"],

@@ -1,0 +1,135 @@
+# What the founder actually walks away with, and what they stay
+# liable for. A dossier that ignores this is a buyer's document, not
+# an adviser's.
+#
+# Confidence tags: well_sourced / medium / heuristic, plus
+# not_reverified where the doctrine is established but the primary
+# text could not be opened during research.
+
+individual_income_tax:
+  headline:
+    rate: 20%
+    base: transfer price minus original cost of the equity minus
+      reasonable expenses
+    category: income from property transfer (财产转让所得)
+    confidence: well_sourced
+
+  assessed_value_risk:
+    # The tax authority does not have to accept the stated price.
+    trigger: >
+      Where the declared transfer price is obviously low without proper
+      justification, the authority may assess the income itself. A
+      transfer for no consideration is presumed to be obviously low
+      unless it is an inheritance or a transfer to a qualifying close
+      relative.
+    methods_in_order:
+      - net asset method
+      - comparison with similar transfers
+      - other reasonable methods
+    asset_heavy_trap:
+      rule: >
+        Where land use rights, buildings, intellectual property, or
+        mineral rights exceed 20% of total assets, the authority may
+        require a professional appraisal of net assets. This threshold
+        was tightened down from 50%.
+      meaning: >
+        For a typical manufacturing company that owns its plant, an
+        appraisal-based assessment is the default outcome, not the
+        exception. Model it as the base case, not the downside.
+      confidence: well_sourced
+    removed_justification: >
+      Three consecutive years of losses is no longer accepted as a
+      proper justification for a low price.
+    confidence: well_sourced
+
+  who_withholds:
+    rule: the buyer is the withholding agent
+    meaning: >
+      The buyer carries real exposure here, and buyers know it. Agree
+      in the sale agreement who bears the cost if the authority later
+      assesses the price upward.
+    basis_step_up: >
+      Where the authority assesses the seller's income upward, the
+      buyer's cost basis steps up to the assessed amount, so the same
+      value is not taxed twice on a later exit.
+    confidence: well_sourced
+
+  tax_before_registration:
+    rule: >
+      Shanghai requires an individual seller to complete tax filing
+      before applying to register the shareholder change, with
+      automatic information exchange between the tax and registration
+      authorities. Other provinces have been adopting equivalents.
+    meaning: >
+      Plan for the tax cash to be available at closing, not after it.
+      A seller expecting to pay tax out of the proceeds can find the
+      share transfer cannot be registered until the tax is paid.
+    confidence: well_sourced
+
+  local_rebates:
+    status: >
+      The old structure of routing a sale through a partnership in a
+      low-tax district to obtain an assessed rate of a few percent was
+      closed from 2022, when partnerships holding equity investments
+      were required to move to audited collection. What survives is not
+      a lower rate but a discretionary refund of part of the local
+      government's retained share of the tax.
+    advice: >
+      Treat any promised refund as unsecured and non-bankable. Never
+      let it move the headline price. Model the seller's proceeds at a
+      flat 20% and treat a refund as an unpriced option.
+    confidence: not_reverified  # established practice; primary text not opened
+
+performance_undertakings:
+  # Who the buyer can actually enforce against. This asymmetry is the
+  # single most important structural fact for a selling founder.
+  against_the_founder:
+    status: valid and fully enforceable
+    meaning: >
+      A buyback or compensation promise given by the founder personally
+      is an ordinary contract between shareholders and will be
+      enforced. This is where the founder's real post-closing risk
+      lives, and it is why buyers push the obligation onto the founder
+      rather than the company.
+  against_the_company:
+    status: valid as a contract, but performance is conditional
+    detail: >
+      A buyback by the company itself requires the company to complete
+      a lawful capital reduction first, and a cash compensation claim
+      against the company succeeds only to the extent distributable
+      profit exists. Without those, a court will reject the claim on
+      capital maintenance grounds.
+    meaning: >
+      An undertaking given by the company is close to worthless to a
+      buyer. One given by the founder is worth its full face value
+      against the founder's personal assets.
+  recent_movement: >
+      Under the company law in force since July 2024, courts have moved
+      from policing whether these clauses are valid to judging
+      substantively whether they can be performed. The live questions
+      are now targeted capital reductions and targeted profit
+      distributions, and the Supreme People's Court has issued guidance
+      on the deadline for exercising a buyback right.
+  practical_note: >
+      Failed undertakings ruin founders in practice, not only in
+      theory. Chinese business media regularly documents founders who
+      won a dispute and still lost everything, or who went from wealthy
+      to blacklisted debtor after a buyback was triggered.
+  confidence: not_reverified  # doctrine well established; primary text not opened
+
+seller_protection_checklist:
+  # What an adviser insists on before signing.
+  - Cash at closing is worth materially more than promised
+    consideration. Earnout compensation is frequently uncollectable —
+    one listed buyer is owed over 460M from a counterparty with no
+    executable assets, and the mirror risk falls on sellers too.
+  - Personal guarantees on company debt must be released at closing or
+    expressly assumed, in writing, by the buyer.
+  - Give undertakings personally only for facts you control, and cap
+    them in amount and in time.
+  - Have the tax position modelled before agreeing a headline price,
+    especially where the company owns its land and buildings.
+  - Where the buyer is a state platform, understand that the appraisal
+    sets the ceiling, so engage with the valuation before it is filed.
+  - Employee severance obligations follow the company in a share sale.
+    Buyers will price them in; know the number first.

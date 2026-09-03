@@ -52,54 +52,187 @@ buyers:
     confidence: well_sourced
 
   - key: industrial_fund
-    name_cn: 产业并购基金
-    name_en: Industrial M&A fund
+    name_cn: 产业并购基金 / PE控股型收购
+    name_en: Industrial M&A fund (control-oriented PE)
     motive: >
-      Buy control, improve the company for two to three years, then sell
-      it on — often to a listed company. The common structure is a
-      special-purpose vehicle backed by state capital plus a private
-      fund manager.
+      Buy control, improve the company for two to four years, then sell
+      it on — usually into a listed company. The common structure is a
+      limited partnership with a local state platform or guidance fund
+      as anchor investor and a private fund manager running it.
     prefers:
       - stable cash flow and a defensible niche
-      - a founder willing to stay through a transition period
-      - sectors a listed acquirer will want later
+      - a founder willing to stay and to roll 20-40% of equity forward
+      - sectors a listed acquirer will want later, ideally one already
+        inside the same state system, because that is the exit
     avoids:
       - companies fully dependent on the founder personally
+      - anything too small to repay the cost of the structure
     payment: cash, often in installments tied to performance
-    typical_stake: control (51%+)
+    typical_stake: >
+      51% to 67%. Above 51% the fund can consolidate the accounts and
+      control the board; 67% matters where changing the articles needs
+      a supermajority.
+    size_reality:
+      warning: >
+        This category is smaller than it looks for an SME seller. The
+        named Chinese control deals of 2024-2026 cluster at equity
+        cheques of 450M to 1.6bn — 启明创投 took control of 天迈科技 for
+        roughly 450-500M, 奇瑞's fund paid 1.575bn for 25% of 鸿合科技,
+        晨壹投资 paid 1.2bn for 乐橙. Name-brand control PE is pointed
+        at listed-company control and larger private platforms, not at
+        companies worth 20-200M. In that smaller band the real buyers
+        are trade buyers and state platforms.
+      confidence: well_sourced
+    evidence:
+      - >-
+        启明创投 taking control of 天迈科技 is the reference precedent —
+        widely described as the first private-fund takeover after the
+        September 2024 reform. Control was announced in January 2025
+        and completed in January 2026, with the first bolt-on
+        acquisition following within months.
+      - >-
+        The regulator actively encourages this. In May 2025 the CSRC
+        said it would encourage private funds to take part in listed
+        company M&A, and the revised restructuring rules shorten the
+        lock-up for funds that have held for at least 48 months.
+      - >-
+        Watch for false control. Many announced "control" deals are
+        voting-rights delegations rather than share purchases, used to
+        avoid a mandatory tender offer. A seller should price a voting
+        arrangement differently from a share sale.
+    confidence: well_sourced
 
   - key: state_platform
     name_cn: 地方国资平台
     name_en: Local state-owned platform
     motive: >
-      Keep employment, tax revenue, and industry chains in the region.
-      State platforms have become the de facto buyer of last resort for
-      significant local companies with no successor.
+      Keep employment, tax revenue, and industrial chains inside the
+      jurisdiction. Buying control is a form of investment promotion —
+      the platform acquires a company in order to anchor or relocate
+      the supply chain in its own city. Rescuing a distressed local
+      champion and capturing hard-technology assets are the other two
+      standing motives. State platforms have become the de facto buyer
+      of last resort for significant local companies without a
+      successor.
     prefers:
       - the company matters to the local economy or supply chain
-      - manufacturing and hard assets
+      - manufacturing, land, buildings, equipment, patents
+      - a company that can eventually sit under a listed vehicle in the
+        same state system
     avoids:
-      - paying above appraised value (a formal asset appraisal is
-        mandatory when state capital buys)
+      - paying above the filed appraisal
+      - asset-light businesses whose value is goodwill and relationships
     payment: cash at appraised value; slower process, high certainty
     typical_stake: control or significant minority
+    valuation_mechanics:
+      rule: >
+        When state capital buys, an audit and a formal asset appraisal
+        are mandatory and the appraisal must be filed with the state
+        asset regulator. Internal rules generally forbid paying above
+        the filed appraisal without documented special grounds.
+      consequence: >
+        The appraisal is a price ceiling, not a floor. A seller who
+        negotiates a headline price before the appraiser is engaged
+        usually loses the difference. Where the income approach and the
+        asset approach disagree, the risk function anchors to the lower
+        one unless the seller has put a defensible income model in
+        front of them first.
+      what_prices_well: land, buildings, equipment, patents
+      what_prices_badly: goodwill, brand, customer relationships — so
+        asset-light service companies are systematically underpaid by
+        state buyers relative to trade buyers
+      timing: the appraisal and filing chain adds six to twelve weeks
+      confidence: heuristic  # rule is well_sourced, consequences are practitioner reading
+    how_to_approach:
+      # Routing matters more than the pitch.
+      steps:
+        - >-
+          Start with the district or city investment promotion bureau,
+          not the platform. The platform executes; the promotion arm
+          holds the mandate and the political incentive.
+        - >-
+          Then the state asset commission and the platform's investment
+          department. Platforms that already control a listed vehicle
+          are the ones that can actually pay, because they have an exit.
+        - >-
+          The highest-conversion route is through a securities firm or a
+          guidance-fund manager already partnered with that platform,
+          because they can pre-clear a price range with the risk
+          committee before the seller pays for an appraisal.
+        - >-
+          Sequence that works: sound out the promotion arm, sign a
+          non-binding framework agreement with a price range, let the
+          platform commission the appraisal, then diligence, then the
+          internal approval chain. Expect four to nine months. The
+          approval chain, not diligence, is the long pole.
+      confidence: heuristic
+    evidence:
+      - >-
+        Volume is real. Control of A-share companies changed hands
+        roughly every two days in early 2026, passing one hundred
+        companies by July 2026, with state buyers prominent. In 2025
+        local state entities made 40 acquisitions of listed companies
+        worth 54.57bn, 34 of them for control.
+      - >-
+        Most active regions by evidence: Hubei (长江产投 took six
+        controlling stakes in three years), Anhui (合肥国资 paid 2.9bn
+        for control of 维信诺; 安徽国资 took 杉杉股份 through
+        restructuring for roughly 7.1bn), Zhejiang, Jiangsu, Shanghai,
+        Shandong. County-level platforms are now buyers too, not only
+        provincial ones.
+      - >-
+        State buyers do use performance undertakings. 南方黑芝麻 was
+        bought by a state acquirer for 942M alongside a 315M
+        performance arrangement, so the belief that state buyers never
+        use earnouts is false.
+    seller_warning: >
+      A documented pattern exists in which local capital takes a
+      minority stake as an investment-promotion sweetener and later
+      pushes for control. Agree the endgame in writing at the first
+      investment, not at the second.
+    confidence: well_sourced
 
   - key: search_fund
     name_cn: 搜索基金
     name_en: Search fund / entrepreneurship through acquisition
     motive: >
-      A young operator backed by investors buys one company to run it.
-      Embryonic in China (a handful of funds, no closed mainland deal
-      yet) but purpose-built for succession: the seller gets a
-      successor, not just a check.
+      A single operator backed by investors buys one company in order
+      to run it. The model is purpose-built for succession, because the
+      seller gets a successor rather than only a cheque.
     prefers:
-      - revenue roughly 30 to 200 million CNY, stable cash flow
-      - simple business models a new CEO can learn
-      - founder open to a handover period
+      - target size roughly 30 to 200 million CNY
+      - the Yangtze River Delta, which is the stated hunting ground
+      - stable cash flow, mature, overlooked by mainstream capital
+      - typically under 10 times earnings
     avoids:
+      - software and asset-light industries, explicitly, on the view
+        that their cash-flow dynamics in China are weak
       - complex technology or heavy turnarounds
-    payment: cash plus seller financing; modest multiples
+    payment: >
+      Pure cash, with no performance undertaking, and the founder exits
+      at closing. Holding period is stated as six to ten years, much
+      longer than the four to seven typical in the United States.
     typical_stake: control
+    liquidity_warning:
+      fact: >
+        As of the most recent reporting available (mid-2026), no search
+        fund had completed a single acquisition in mainland China.
+        China's first was set up in Nanjing in 2023 and only three or
+        four exist. The stated blockers are a shortage of searchers,
+        unfamiliarity among investors, and difficulty finding genuinely
+        cash-generative targets.
+      meaning: >
+        On paper this is the best-fitting buyer for a small succession
+        sale. In practice it has never closed one here. Rank it for fit,
+        but never present it to a seller as a likely source of
+        liquidity.
+      confidence: well_sourced
+    seller_insight: >
+      Practitioners in this niche say owners will accept a searcher
+      provided the searcher can explain the non-price part of the
+      offer — what happens to the staff, the name, and the founder's
+      legacy. That is the whole pitch.
+    confidence: well_sourced
 
   - key: trade_buyer
     name_cn: 同行 / 供应链买家
@@ -140,15 +273,72 @@ buyers:
     name_cn: 外资战略买家
     name_en: Foreign strategic acquirer
     motive: >
-      Buy market access, a China supply base, or a local license.
+      Buy market access, a China supply base, or a local licence.
     prefers:
-      - export-oriented or globally relevant niches
+      - industrial niches such as robotics, precision manufacturing,
+        medical devices, and components
+      - export-oriented or globally relevant positions
       - clean compliance, transferable certifications
     avoids:
-      - sectors on the foreign-investment negative list
-      - deals that could trigger national-security review
+      - anything data-adjacent, AI-adjacent, or platform-adjacent
+      - defence adjacency or critical technology, which triggers review
+        regardless of stake size
     payment: cash, highest process standards, longest timeline
-    typical_stake: control where the negative list allows it
+    typical_stake: control, which since 2024 is legally available in
+      all manufacturing sectors
+    legal_gates:
+      # These three questions decide whether a foreign buyer is even
+      # possible. For most manufacturing SMEs the answer is now "yes".
+      negative_list:
+        fact: >
+          The 2024 edition of the foreign investment negative list, in
+          force since 1 November 2024, contains 29 items and removed
+          the last manufacturing restrictions entirely. Remaining
+          restrictions cover services only — telecoms, internet,
+          education, culture, and medical services.
+        meaning: there is no longer any negative-list bar to a foreign
+          buyer taking 100% of a Chinese manufacturing company
+        confidence: well_sourced
+      merger_filing:
+        fact: >
+          Filing is required only if all parties' combined turnover
+          exceeds 12bn globally, or 4bn inside China, AND at least two
+          parties each have more than 800M of China turnover.
+        meaning: >
+          The 800M each-of-two limb is the gate. A target with less than
+          800M of China revenue never triggers a filing, however large
+          the buyer. Most SMEs are structurally out of scope — but the
+          regulator can still call in a below-threshold deal, and has
+          done so.
+        confidence: well_sourced
+      security_review:
+        fact: >
+          Any investment in defence-related fields triggers review with
+          no control test. In other listed sensitive fields — critical
+          technology, important equipment manufacturing, energy,
+          agriculture, infrastructure, information technology — review
+          is triggered only where the foreign investor acquires actual
+          control, defined as more than 50% of equity, or less with
+          decisive influence over the board.
+        timing: 15 working days to decide whether review is needed, then
+          30 working days for ordinary review or 60 for special review;
+          the investment may not close during this period
+        trap: >
+          Hong Kong, Macau, and Taiwan investors are treated the same
+          way. Routing through a Hong Kong vehicle does not avoid
+          security review.
+        confidence: well_sourced
+    market_direction:
+      note: >
+        The larger flow currently runs the other way. Foreign owners
+        have been selling their China businesses to Chinese capital,
+        and foreign strategics have mostly been buying out their own
+        joint-venture partners rather than acquiring new companies.
+        Genuine foreign purchases of private Chinese SMEs still happen
+        in industrial niches but are thin. At the frontier-technology
+        end the door is shut: a foreign acquisition of a Chinese AI
+        company was blocked outright.
+      confidence: well_sourced
 
 # How the market actually behaves. These are the constraints that
 # decide whether a deal closes at all, and they matter more to a

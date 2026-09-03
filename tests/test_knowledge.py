@@ -12,6 +12,7 @@ EXPECTED_FILES = {
     "deal_structures",
     "fit_criteria",
     "origination_playbook",
+    "seller_economics",
     "valuation_heuristics",
 }
 
