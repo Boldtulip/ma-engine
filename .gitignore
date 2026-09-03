@@ -8,9 +8,4 @@ venv/
 .env
 output/
 .pytest_cache/
-data/*.log
-data/full_scan_log.txt
-# Rebuildable raw caches. The scored CSV and the watchlist are shipped;
-# these regenerate with `ma-engine score --ashare`.
-data/ashare_scored.json
-data/ashare_sample.json
+data/

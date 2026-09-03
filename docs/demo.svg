@@ -1,29 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="593" viewBox="0 0 900 593" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="13.5">
-<rect width="900" height="593" rx="10" fill="#0d1117" stroke="#30363d"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="635" viewBox="0 0 900 635" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'DejaVu Sans Mono',monospace" font-size="13.5">
+<rect width="900" height="635" rx="10" fill="#0d1117" stroke="#30363d"/>
 <rect width="900" height="34" rx="10" fill="#161b22"/>
 <rect y="24" width="900" height="10" fill="#161b22"/>
 <circle cx="20" cy="17" r="5.5" fill="#ff5f57"/>
 <circle cx="39" cy="17" r="5.5" fill="#febc2e"/>
 <circle cx="58" cy="17" r="5.5" fill="#28c840"/>
 <text x="450" y="22" fill="#8b949e" font-size="12" text-anchor="middle">ma-engine</text>
-<text x="22" y="46" fill="#7d8590" xml:space="preserve">$ ma-engine score --ashare</text>
-<text x="22" y="88" fill="#c9d1d9" xml:space="preserve">Screened 3576 companies. Top 10 by succession score:</text>
-<text x="22" y="130" fill="#8b949e" font-weight="600" xml:space="preserve">  #  score  company        owner     signal summary</text>
-<text x="22" y="151" fill="#30363d" xml:space="preserve">  ──────────────────────────────────────────────────────────────────────────</text>
-<text x="22" y="172" fill="#c9d1d9" xml:space="preserve">  1     61  丽珠集团       朱保国     朱保国 is 64 years old (disclosed).</text>
-<text x="22" y="193" fill="#c9d1d9" xml:space="preserve">  2     60  波导股份       徐立华     徐立华 is 63 years old (disclosed).</text>
-<text x="22" y="214" fill="#c9d1d9" xml:space="preserve">  3     59  深华发A        李中秋     李中秋 is 62 years old (disclosed).</text>
-<text x="22" y="235" fill="#c9d1d9" xml:space="preserve">  4     59  北纬科技       傅乐民     傅乐民 is 63 years old (disclosed).</text>
-<text x="22" y="256" fill="#c9d1d9" xml:space="preserve">  5     57  云南锗业       包文东     包文东 is 66 years old (disclosed).</text>
-<text x="22" y="277" fill="#c9d1d9" xml:space="preserve">  6     57  ST八菱        顾瑜      顾瑜 is 72 years old (disclosed).</text>
-<text x="22" y="298" fill="#c9d1d9" xml:space="preserve">  7     57  超图软件       钟耳顺     钟耳顺 is 70 years old (disclosed).</text>
-<text x="22" y="340" fill="#c9d1d9" xml:space="preserve">Strongest candidate in detail:</text>
-<text x="22" y="382" fill="#e6edf3" font-weight="600" xml:space="preserve">丽珠集团 — succession score 61/100</text>
-<text x="22" y="403" fill="#3fb950" xml:space="preserve">  [+32.2] 朱保国 is 64 years old (disclosed).</text>
-<text x="22" y="424" fill="#3fb950" xml:space="preserve">  [+16.2] None of the 17 other people on record share the owner&#x27;s surname 朱.</text>
-<text x="22" y="445" fill="#3fb950" xml:space="preserve">  [+12.6] 朱保国 has held the role for 24 years (since 2002).</text>
-<text x="22" y="487" fill="#c9d1d9" xml:space="preserve">Buyer shortlist:</text>
-<text x="22" y="508" fill="#58a6ff" xml:space="preserve">  - A股上市公司 (Listed strategic acquirer) (fit 85%)</text>
-<text x="22" y="529" fill="#58a6ff" xml:space="preserve">  - 产业并购基金 (Industrial M&amp;A fund) (fit 75%)</text>
+<text x="22" y="46" fill="#7d8590" xml:space="preserve">$ ma-engine demo</text>
+<text x="22" y="88" fill="#d29922" xml:space="preserve">MA Engine — demo on synthetic data.</text>
+<text x="22" y="109" fill="#d29922" xml:space="preserve">Every company and person below is fictional.</text>
+<text x="22" y="151" fill="#c9d1d9" xml:space="preserve">Screened 400 companies. Top 7 by succession score:</text>
+<text x="22" y="193" fill="#8b949e" font-weight="600" xml:space="preserve">  #  score  company                owner    signal summary</text>
+<text x="22" y="214" fill="#30363d" xml:space="preserve">  ────────────────────────────────────────────────────────────────────────────</text>
+<text x="22" y="235" fill="#c9d1d9" xml:space="preserve">  1     59  浙江昌泰建材有限公司   丁凤英   estimated around 71 (&#x27;凤英&#x27; peaks in the 1950s).</text>
+<text x="22" y="256" fill="#c9d1d9" xml:space="preserve">  2     59  江苏利昌包装有限公司   萧玉珍   only person in the shareholder and executive records.</text>
+<text x="22" y="277" fill="#c9d1d9" xml:space="preserve">  3     58  上海威威电子有限公司   傅解放   only person in the shareholder and executive records.</text>
+<text x="22" y="298" fill="#c9d1d9" xml:space="preserve">  4     58  江苏昌盛塑料有限公司   马建国   only person in the shareholder and executive records.</text>
+<text x="22" y="319" fill="#c9d1d9" xml:space="preserve">  5     58  广东永恒包装有限公司   袁和平   only person in the shareholder and executive records.</text>
+<text x="22" y="361" fill="#c9d1d9" xml:space="preserve">Strongest candidate in detail:</text>
+<text x="22" y="403" fill="#e6edf3" font-weight="600" xml:space="preserve">浙江昌泰建材有限公司 — succession score 59/100</text>
+<text x="22" y="424" fill="#3fb950" xml:space="preserve">  [+19.2] 丁凤英 is estimated around 71 years old.</text>
+<text x="22" y="445" fill="#3fb950" xml:space="preserve">  [+18.0] 丁凤英 has held the role for 35 years (since 1991).</text>
+<text x="22" y="466" fill="#3fb950" xml:space="preserve">  [+16.2] No other person on record shares the owner&#x27;s surname 丁.</text>
+<text x="22" y="487" fill="#3fb950" xml:space="preserve">  [ +6.0] 71% of the controlling stake is pledged.</text>
+<text x="22" y="529" fill="#c9d1d9" xml:space="preserve">Buyer shortlist:</text>
 <text x="22" y="550" fill="#58a6ff" xml:space="preserve">  - 同行 / 供应链买家 (Trade buyer) (fit 70%)</text>
+<text x="22" y="571" fill="#58a6ff" xml:space="preserve">  - 地方国资平台 (Local state platform) (fit 60%)</text>
+<text x="22" y="592" fill="#58a6ff" xml:space="preserve">  - 搜索基金 (Search fund) (fit 55%)</text>
 </svg>

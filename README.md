@@ -41,9 +41,16 @@ also states a birth year in the biography text, the two agree: checked
 across the oldest owners in the set, every case with both fields
 matched exactly.
 
-The scored table is in [`data/succession_watchlist.csv`](data/succession_watchlist.csv)
-and the top 100 in [`data/succession_watchlist.md`](data/succession_watchlist.md).
-Regenerate either at any time with `ma-engine score --ashare`.
+**This repository ships no real-company data.** The numbers above are
+the result of a run, reported as a finding; the scored table itself
+names living individuals next to an algorithmic score, so it is not
+distributed here. Reproduce it in about half an hour on your own
+machine, from the same public filings:
+
+```bash
+ma-engine score --ashare            # builds the table locally
+ma-engine export --ashare           # writes CSV + a ranked watchlist
+```
 
 These are listed companies, so this is the visible tip of the problem.
 The same signals apply to the roughly 50 million private companies that
@@ -251,13 +258,18 @@ convention the academic databases use.
 Real output from a live full-market run:
 
 ```
-  #  score  company        owner     signal summary
-  1     61  丽珠集团        朱保国     朱保国 is 64 years old (disclosed).
-  2     60  波导股份        徐立华     徐立华 is 63 years old (disclosed).
-  3     59  深华发A         李中秋     李中秋 is 62 years old (disclosed).
-  4     57  云南锗业        包文东     包文东 is 66 years old (disclosed).
-  5     57  超图软件        钟耳顺     钟耳顺 is 70 years old (disclosed).
+MA Engine — demo on synthetic data.
+Every company and person below is fictional.
+
+  #  score  company                owner    signal summary
+  1     59  浙江昌泰建材有限公司   丁凤英   estimated around 71 ('凤英' peaks in the 1950s).
+  2     59  江苏利昌包装有限公司   萧玉珍   only person in the shareholder and executive records.
+  3     58  上海威威电子有限公司   傅解放   only person in the shareholder and executive records.
 ```
+
+Against real filings the same command prints disclosed ages instead of
+estimates, and the reason column reads, for example, *"… is 64 years
+old (disclosed)"*.
 
 **One implementation note worth knowing if you work from outside
 China.** These endpoints are not geo-blocked, but opening a new TLS
@@ -278,14 +290,17 @@ This project draws a hard line, on purpose:
    licensed API — with your own credentials.
 2. **Estimates are labeled as estimates.** An age inferred from a name
    is a probability, not a fact, and every output says so.
-3. **Scores are screening aids, not claims about people.** The engine
+3. **No personal data is distributed.** The repository ships synthetic
+   demo data only. Scored tables about real, named individuals are
+   generated on your machine and stay there.
+4. **Scores are screening aids, not claims about people.** The engine
    ranks where a professional should *look first*. It never asserts
    that a named individual intends to sell, retire, or anything else.
 
 ## Roadmap
 
 - [x] A-share adapter reading live public disclosures
-- [x] Scored dataset of 3,576 listed private companies
+- [x] Full-market run over every listed company (reproducible locally)
 - [ ] Resolve controllers held through intermediate holding companies
       (today those fall into "other legal person" rather than being
       traced up the chain)

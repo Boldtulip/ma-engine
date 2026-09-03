@@ -20,8 +20,9 @@ def test_exchange_prefixes():
 
 
 def test_classify_person_controlled():
+    # Invented names; the classifier only looks at name shape.
     assert classify_ownership("秦英林,钱瑛") == "民营"
-    assert classify_ownership("朱保国") == "民营"
+    assert classify_ownership("陈立文") == "民营"
 
 
 def test_classify_state_controlled():
@@ -62,11 +63,11 @@ def test_build_maps_disclosed_age_and_tenure():
         fin={"TOTAL_OPERATE_INCOME": 5.0e9, "PARENT_NETPROFIT": 4.0e8},
         pledge_ratio=0.03,
         detail={
-            "controller": "朱保国",
+            "controller": "陈立文",
             "controller_pct": 25.0,
             "top10": [{"name": "某某资管计划", "pct": 5.0}],
             "executives": [
-                {"name": "朱保国", "position": "董事长", "age": 64,
+                {"name": "陈立文", "position": "董事长", "age": 64,
                  "birth_year": 1962, "since": "2002-05-01"},
                 {"name": "李伟", "position": "总经理", "age": 45,
                  "birth_year": None, "since": "2015-01-01"},
@@ -75,12 +76,12 @@ def test_build_maps_disclosed_age_and_tenure():
     )
     assert company is not None
     assert company.is_private
-    assert company.legal_rep == "朱保国"
+    assert company.legal_rep == "陈立文"
     assert company.legal_rep_since == 2002
     assert company.revenue_m == 5000.0
     assert company.net_profit_m == 400.0
     owner = company.controller()
-    assert owner.name == "朱保国" and owner.age == 64
+    assert owner.name == "陈立文" and owner.age == 64
 
 
 def test_universe_pagination_uses_count_not_pages():
