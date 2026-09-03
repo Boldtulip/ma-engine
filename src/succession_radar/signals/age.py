@@ -71,14 +71,47 @@ def estimate_age(full_name: str, year: Optional[int] = None) -> tuple[Optional[i
     return None, 0.0, "name not in cohort table"
 
 
+# Owner age mapped to the chance that the company actually changes
+# hands. The curve rises through the fifties, peaks between about 63
+# and 72, and then falls away.
+#
+# The falling tail is deliberate and is the part people get wrong. An
+# owner still in the chair at 82 has spent twenty years demonstrating
+# that he does not intend to sell, and by that age control has usually
+# been arranged inside the family or the company already. He is the
+# least persuadable seller on the list, not the most. The owner in his
+# sixties is the one at the decision point: past the statutory
+# retirement age, still in good health, with a business that is still
+# straightforward to sell.
+#
+# The anchors are judgment, not measurement. Calibrate them against
+# your own record of which companies actually sold.
+AGE_CURVE = [
+    (40, 0.02),
+    (50, 0.10),
+    (55, 0.30),
+    (58, 0.50),
+    (60, 0.75),
+    (63, 0.95),   # statutory retirement age for men after the 2024 reform
+    (66, 1.00),
+    (72, 1.00),   # the decision window closes around here
+    (75, 0.85),
+    (80, 0.60),
+    (85, 0.45),
+    (95, 0.40),
+]
+
+
 def _age_to_score(age: int) -> float:
-    """Map owner age to succession pressure. Below 50 there is little
-    pressure; from 55 it rises; past 70 it is close to certain."""
-    if age < 50:
-        return 0.05
-    if age >= 70:
-        return 1.0
-    return round((age - 50) / 20, 2)  # linear ramp 50 -> 70
+    """Interpolate the curve above."""
+    if age <= AGE_CURVE[0][0]:
+        return AGE_CURVE[0][1]
+    if age >= AGE_CURVE[-1][0]:
+        return AGE_CURVE[-1][1]
+    for (x0, y0), (x1, y1) in zip(AGE_CURVE, AGE_CURVE[1:]):
+        if x0 <= age <= x1:
+            return round(y0 + (y1 - y0) * (age - x0) / (x1 - x0), 3)
+    return 0.0  # linear ramp 50 -> 70
 
 
 def founder_age_signal(company: Company) -> Signal:

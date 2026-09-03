@@ -29,6 +29,11 @@ but the companies' own public filings:
 | Companies with no successor visible in the records | **1,397** (39%) |
 | Median owner age | **58** |
 
+Ages are taken from the companies' own filings. Where the same filing
+also states a birth year in the biography text, the two agree: checked
+across the oldest owners in the set, every case with both fields
+matched exactly.
+
 The scored table is in [`data/succession_watchlist.csv`](data/succession_watchlist.csv)
 and the top 100 in [`data/succession_watchlist.md`](data/succession_watchlist.md).
 Regenerate either at any time with `radar score --ashare`.
@@ -87,6 +92,7 @@ signals that are all computable from public data:
 | Signal | What it reads | Example reason it produces |
 |---|---|---|
 | Owner age | Disclosed age where it exists; otherwise the owner's **given name**. Chinese given names follow strong generational fashions: 建国 points to ~1950, 子轩 to ~2005. | "王建国 is estimated around 71 years old (given name '建国' peaks in the 1950s)." |
+| | *The age curve rises through the fifties, peaks between about 63 and 72, and then **falls**. See below.* | |
 | Owner tenure | Legal-representative change records (变更记录), which are public. | "王建国 has been legal representative for 34 years." |
 | Visible heir | Whether a younger person sharing the owner's surname appears among shareholders or executives. | "None of the 3 other people on record share the owner's surname 王." |
 | Sell pressure | Equity pledges (股权出质, public) and published litigation. | "89% of the controlling stake is pledged." |
@@ -95,6 +101,30 @@ Every score decomposes into sentences like these. A signal only moves
 the score as far as its confidence allows: an age estimated from a name
 counts for about half of a disclosed age, and missing data pulls a
 score down, never up.
+
+### Why the age curve falls after about 72
+
+The obvious way to score age is "older means more likely to sell."
+That is wrong, and it produces a useless target list.
+
+An owner still in the chair at 82 has spent twenty years demonstrating
+that he does not intend to sell. By that age control has usually been
+arranged already, inside the family or the company. He is the least
+persuadable seller on the list, not the most. Meanwhile the owner in
+his sixties is at the actual decision point: past the statutory
+retirement age, still in good health, running a business that is still
+straightforward to sell.
+
+So the curve peaks between roughly 63 and 72 and declines after that,
+without ever going to zero. In the live data this is the difference
+between a top-20 list led by owners of 80, 82 and 87 — the rarest and
+least reachable cases, 0.9% of the population — and one led by owners
+of 62 to 70, which is where the deals are.
+
+The anchor points are judgment, not measurement. They are in
+`signals/age.py`, they are meant to be argued with, and the right way
+to settle the argument is to calibrate them against your own record of
+which companies actually sold.
 
 The weights in `scoring/weights.yaml` are **illustrative defaults**.
 Calibrating them requires outcome data — which companies actually
@@ -180,11 +210,11 @@ Real output from a live full-market run:
 
 ```
   #  score  company        owner     signal summary
-  1     61  今创集团        俞金坤     俞金坤 is 83 years old (disclosed).
-  2     57  雷曼光电        王丽珊     王丽珊 is 81 years old (disclosed).
-  3     57  超图软件        钟耳顺     钟耳顺 is 70 years old (disclosed).
-  4     55  天润工业        邢运波     邢运波 is 78 years old (disclosed).
-  5     55  金鹰股份        傅国定     傅国定 is 81 years old (disclosed).
+  1     61  丽珠集团        朱保国     朱保国 is 64 years old (disclosed).
+  2     60  波导股份        徐立华     徐立华 is 63 years old (disclosed).
+  3     59  深华发A         李中秋     李中秋 is 62 years old (disclosed).
+  4     57  云南锗业        包文东     包文东 is 66 years old (disclosed).
+  5     57  超图软件        钟耳顺     钟耳顺 is 70 years old (disclosed).
 ```
 
 **One implementation note worth knowing if you work from outside

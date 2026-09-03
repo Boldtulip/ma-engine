@@ -37,6 +37,19 @@ def young_founder_with_heir() -> Company:
     )
 
 
+def test_age_curve_peaks_in_the_sixties():
+    """The decision window is the sixties, not extreme old age. An
+    owner still in the chair at 82 has shown he will not sell."""
+    from succession_radar.signals.age import _age_to_score
+
+    assert _age_to_score(66) == 1.0
+    assert _age_to_score(45) < _age_to_score(58) < _age_to_score(64)
+    assert _age_to_score(82) < _age_to_score(66)
+    assert _age_to_score(87) < _age_to_score(72)
+    # but old age is never treated as no signal at all
+    assert _age_to_score(85) > _age_to_score(50)
+
+
 def test_split_name():
     assert split_name("王建国") == ("王", "建国")
     assert split_name("欧阳修文") == ("欧阳", "修文")
