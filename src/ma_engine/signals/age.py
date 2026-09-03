@@ -86,7 +86,7 @@ def estimate_age(full_name: str, year: Optional[int] = None) -> tuple[Optional[i
 # hands. The curve rises through the fifties, peaks between about 63
 # and 72, and then falls away.
 #
-# The falling tail is deliberate and is the part people get wrong. An
+# The falling tail is deliberate. An
 # owner still in the chair at 82 has spent twenty years demonstrating
 # that he does not intend to sell, and by that age control has usually
 # been arranged inside the family or the company already. He is the

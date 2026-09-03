@@ -1,7 +1,7 @@
 # Common deal shapes for succession sales in China.
 #
 # The dossier module uses these to suggest how a deal could be
-# structured, so the output reads like a banker's memo rather than a
+# structured, so the output reads like a memo rather than a
 # database row.
 #
 # v1, drafted from published market practice; parameters are indicative.

@@ -3,9 +3,8 @@
 Generates a deterministic set of fictional Chinese SMEs whose owners,
 shareholders, and finances look statistically plausible. Every name
 and company here is invented; any match with a real person or company
-is coincidence. This is the fuel the repository ships so the engine
-runs out of the box, real fuel is plugged in through the other
-adapters.
+is coincidence. It is included so the engine runs without any setup;
+real data comes in through the other adapters.
 """
 
 from __future__ import annotations

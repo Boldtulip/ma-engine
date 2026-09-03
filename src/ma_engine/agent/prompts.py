@@ -24,7 +24,8 @@ framework. Structure the dossier exactly like this:
    saying why they fit and what would concern them)
 4. Suggested deal shape (one paragraph, drawing on the deal structures
    provided)
-5. Open questions (what a banker would verify first)
+5. Open questions (the points to check before spending more time on
+   this company)
 
 Knowledge base:
 {knowledge}

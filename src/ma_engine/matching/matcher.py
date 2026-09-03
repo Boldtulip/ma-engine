@@ -2,7 +2,7 @@
 
 Reads the knowledge base and ranks buyer categories for one target
 company, each with a written rationale. This is the automated
-version of a banker's buyer-list memo. The rules here are deliberately simple and
+version of a buyer-list memo. The rules here are deliberately simple and
 inspectable; the knowledge files carry the substance.
 
 If an Anthropic API key is available, the LLM writes a fuller

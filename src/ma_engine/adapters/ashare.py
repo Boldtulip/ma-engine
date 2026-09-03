@@ -11,7 +11,7 @@ private-company chairmen are already past 65.
 Everything here uses free, public disclosure endpoints. No credentials,
 no scraping behind a login, no anti-bot circumvention.
 
-One hard-won implementation note. From outside mainland China these
+One implementation note. From outside mainland China these
 endpoints are not blocked, but opening a new TLS connection to them
 costs about forty seconds, while reusing an open one costs a fraction
 of a second. So every request goes through a persistent session, one
@@ -105,7 +105,7 @@ def em_code(code: str) -> str:
 
 
 class _Client:
-    """Thread-local persistent sessions. The whole performance story."""
+    """Thread-local persistent sessions."""
 
     def __init__(self, timeout: int = 60):
         self._local = threading.local()

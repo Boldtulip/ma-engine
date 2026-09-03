@@ -1,7 +1,6 @@
 # What makes an SME a good acquisition target.
 #
-# These are the checks a banker runs before showing a company to any
-# buyer. The matching module uses them to qualify a target and to flag
+# These are the checks we run before showing a company to a buyer. The matching module uses them to qualify a target and to flag
 # risks in the dossier. Thresholds carry confidence tags:
 #   well_sourced - read directly from the named source
 #   medium      - from a real named report, exact figure gated

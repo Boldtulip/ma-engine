@@ -37,8 +37,7 @@ class QccAdapter(Adapter):
             raise RuntimeError(
                 "QCC credentials missing. Set QCC_APP_KEY and QCC_SECRET_KEY. "
                 "You need a corporate-verified account on openapi.qcc.com "
-                "(or qcckyc.com from outside mainland China). "
-                "This is deliberate: the data layer is the part you bring."
+                "(or qcckyc.com from outside mainland China)."
             )
 
     def companies(self) -> Iterable[Company]:
