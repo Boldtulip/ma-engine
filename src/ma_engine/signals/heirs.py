@@ -2,7 +2,7 @@
 
 In Chinese family companies, a successor almost always appears in the
 public records before taking over: as a shareholder, a director, or a
-supervisor, and almost always shares the founder's surname. If no
+supervisor, and almost always sharing the founder's surname. If no
 younger person with the founder's surname holds any position or
 shares, the company has no visible successor.
 
@@ -14,11 +14,15 @@ says exactly what was checked so a person can verify it.
 from __future__ import annotations
 
 from ma_engine.adapters.base import Company
-from ma_engine.signals import Signal
+from ma_engine.signals import Signal, signal
 from ma_engine.signals.age import estimate_age, split_name
 
 
-def heir_absence_signal(company: Company) -> Signal:
+@signal("heir_absence")
+def heir_absence_signal(company: Company, params: dict | None = None) -> Signal:
+    params = params or {}
+    gap = int(params.get("generation_gap_years", 18))
+
     owner = company.controller()
     if owner is None:
         return Signal("heir_absence", 0.0, 0.0, "No individual owner found in the records.")
@@ -45,11 +49,11 @@ def heir_absence_signal(company: Company) -> Signal:
         )
 
     # Someone shares the surname. Check whether they look like a younger
-    # generation (disclosed or name-estimated age gap of 18+ years).
+    # generation (disclosed or name-estimated age gap of `gap` years or more).
     owner_age = owner.age or estimate_age(owner.name)[0]
     for p in same_surname:
         p_age = p.age or estimate_age(p.name)[0]
-        if owner_age and p_age and owner_age - p_age >= 18:
+        if owner_age and p_age and owner_age - p_age >= gap:
             return Signal(
                 "heir_absence", 0.1, 0.6,
                 f"{p.name} ({p.role or 'on record'}) shares surname {surname} and is "

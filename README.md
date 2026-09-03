@@ -121,9 +121,23 @@ a new connection for every call.
 
 ## How the scoring works
 
-The engine uses four signals. In the China example they are all
-computed from public records, which publish shareholder names,
-registered capital and change records, but not ages:
+The engine runs a set of signals over each company. A signal reads one
+thing about the company and returns a number between 0 and 1, a
+confidence between 0 and 1, and one sentence saying what it found. The
+score is a weighted sum of the signals, and the sentences are kept, so
+every score can be read back as a short list of things to check. A
+signal only moves the score as far as its confidence allows, and
+missing data lowers a score rather than raising it.
+
+Which signals run, what parameters they use, and how much each one
+weighs is set in one file, `scoring/config.yaml`. To use your own,
+set `MA_ENGINE_SCORING_CONFIG` to its path.
+
+### The bundled signals are an example
+
+The four signals in the bundled config are written for the China
+case, where the public records give shareholder names, registered
+capital and change records, but not ages:
 
 | Signal | What it reads | Example of the reason it writes |
 |---|---|---|
@@ -132,35 +146,60 @@ registered capital and change records, but not ages:
 | Visible heir | Whether a younger person with the owner's surname appears among the shareholders or executives. | "None of the 3 other people on record share the owner's surname 王." |
 | Sell pressure | Pledged equity (股权出质, public) and published litigation. | "89% of the controlling stake is pledged." |
 
-Each signal produces a number between 0 and 1 and one sentence like
-the examples above. The score is a weighted sum, and the sentences are
-kept, so every score can be read back as a short list of things to
-check. A signal only moves the score as far as its confidence allows:
-an age estimated from a name counts for about half as much as a
-disclosed age, and missing data lowers a score rather than raising it.
+Every number behind them is in the config: the age curve, the tenure
+thresholds, the generation gap used to spot an heir, the weights. Two
+of those numbers are worth explaining.
 
-### The age curve
+The age curve does not simply rise with age. An owner still running
+the company at 82 has shown over many years that he does not intend to
+sell, and by then the succession has usually been settled one way or
+another. The owner most likely to actually sell is in his sixties:
+past the statutory retirement age, still in good health, with a
+business that is still easy to hand over. So the curve rises through
+the fifties, peaks between about 63 and 72, and declines after that
+without reaching zero.
 
-Older does not simply mean more likely to sell. An owner who is still
-running the company at 82 has shown over many years that he does not
-intend to sell, and by that age the succession has usually been
-settled inside the family or the company one way or another. The owner
-who is most likely to actually sell is in his sixties: past the
-statutory retirement age, still in good health, with a business that
-is still easy to hand over.
+An age estimated from a name is given about half the confidence of a
+disclosed age, so it moves the score half as far. The bundled table of
+names and birth cohorts is a small demonstration subset; for serious
+use, replace it with the full ChineseNames database (Bao et al.,
+birth-year distributions covering 1.2 billion people, 1930-2008).
 
-So the age signal rises through the fifties, peaks between about 63
-and 72, and declines after that without going to zero. The anchor
-points are in `signals/age.py`. They are a judgment, not a
-measurement, and the way to improve them is to compare them against a
-record of which companies actually sold. The same applies to the
-weights in `scoring/weights.yaml`. That record is built up deal by
-deal, and it is not part of this repository.
+None of these numbers is calibrated. The way to improve them is to
+compare them against a record of which companies actually sold, and
+that record is built up deal by deal; it is not part of this
+repository.
 
-The bundled table of given names and birth cohorts is a small
-demonstration subset. For serious use, replace it with the full
-ChineseNames database (Bao et al., birth-year distributions covering
-1.2 billion people, 1930-2008).
+### Writing your own signal
+
+A signal is a function that takes a company and a dictionary of
+parameters and returns a `Signal`. Register it under a name, list its
+module in the config, and give it a weight:
+
+```python
+from ma_engine.signals import Signal, signal
+
+@signal("concentrated_ownership")
+def concentrated_ownership(company, params):
+    owner = company.controller()
+    pct = owner.ownership_pct if owner else 0
+    return Signal("concentrated_ownership", min(pct / 67, 1.0), 0.8,
+                  f"{owner.name} holds {pct:.0f}% of the company.")
+```
+
+```yaml
+signals:
+  concentrated_ownership:
+    weight: 0.2
+plugins:
+  - my_signals
+```
+
+`examples/custom_signals.py` and `examples/scoring_config.yaml` are a
+complete working version of this, which also drops two of the bundled
+signals and reshapes the age curve. Run it with
+`MA_ENGINE_SCORING_CONFIG=examples/scoring_config.yaml ma-engine demo`
+from the repository root.
 
 ## The knowledge base
 

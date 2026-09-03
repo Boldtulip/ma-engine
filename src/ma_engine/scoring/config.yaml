@@ -1,0 +1,71 @@
+# Scoring configuration.
+#
+# This file decides which signals run, what parameters they use, and
+# how much each one weighs. The four signals here are the China
+# succession example. They are a starting point, not the method:
+# change the numbers, drop signals, or add your own (see `plugins`
+# at the bottom and the example in examples/custom_signals.py).
+#
+# The weights are illustrative defaults. Nothing here is calibrated.
+# Calibration needs a record of which companies actually sold, and
+# that record is built up deal by deal; it is not part of this
+# repository.
+#
+# A signal's contribution to the score is score * confidence * weight,
+# so an uncertain reading (an age estimated from a name, say) moves
+# the total less than a disclosed fact.
+
+signals:
+
+  founder_age:
+    weight: 0.35
+    # Owner age mapped to the chance of a sale, as (age, value) points
+    # joined by straight lines. The curve rises through the fifties,
+    # peaks between about 63 and 72, and falls after that without
+    # reaching zero: an owner still in the chair at 82 has shown over
+    # many years that he does not intend to sell.
+    curve:
+      - [40, 0.02]
+      - [50, 0.10]
+      - [55, 0.30]
+      - [58, 0.50]
+      - [60, 0.75]
+      - [63, 0.95]   # statutory retirement age for men after the 2024 reform
+      - [66, 1.00]
+      - [72, 1.00]
+      - [75, 0.85]
+      - [80, 0.60]
+      - [85, 0.45]
+      - [95, 0.40]
+    # Confidence given to an age read from a disclosure versus one
+    # estimated from the owner's given name.
+    disclosed_confidence: 0.95
+
+  owner_tenure:
+    weight: 0.20
+    # Years in the role below which tenure says little, and above
+    # which it says as much as it can.
+    years_for_minimum: 10
+    years_for_maximum: 30
+    # Confidence when the appointment date is known, and when only the
+    # founding year is known (a ceiling on tenure, not a measure of it).
+    known_date_confidence: 0.90
+    founding_year_confidence: 0.45
+
+  heir_absence:
+    weight: 0.30
+    # Age gap that makes a same-surname person look like the next
+    # generation rather than a sibling or spouse.
+    generation_gap_years: 18
+
+  sell_pressure:
+    weight: 0.15
+    # How much a fully pledged stake and a saturated litigation count
+    # each contribute, and how many published cases count as saturated.
+    pledge_weight: 0.7
+    litigation_weight: 0.3
+    litigation_cases_for_maximum: 10
+
+# Python modules that register additional signals, importable from
+# wherever you run the engine. Example: ["my_signals"]
+plugins: []

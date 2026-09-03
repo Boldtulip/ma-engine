@@ -1,0 +1,28 @@
+# A scoring config that keeps two of the bundled signals, drops two,
+# changes a parameter, and adds a custom signal from a plugin module.
+#
+# Use it with:
+#   MA_ENGINE_SCORING_CONFIG=examples/scoring_config.yaml ma-engine demo
+# (run from the repository root so the `examples` package is importable)
+
+signals:
+
+  founder_age:
+    weight: 0.5
+    # A flatter curve than the bundled one.
+    curve:
+      - [45, 0.05]
+      - [60, 0.80]
+      - [70, 1.00]
+      - [85, 0.60]
+
+  heir_absence:
+    weight: 0.3
+    generation_gap_years: 20
+
+  concentrated_ownership:      # defined in examples/custom_signals.py
+    weight: 0.2
+    full_control_at_pct: 67
+
+plugins:
+  - examples.custom_signals

@@ -1,24 +1,30 @@
 """The scoring engine.
 
-It combines the signals into one succession score from 0 to 100 and
-keeps every reason, so each score can be read back as a short list of
-checkable sentences. A signal only moves the score as far as its
-confidence allows: an age estimated from a name counts for about half
-of a disclosed age. Missing data pulls a score down, never up, the
-engine prefers to under-rank a company than to invent certainty.
+It runs the signals enabled in the scoring config, combines them into
+one score from 0 to 100, and keeps every reason, so each score can be
+read back as a short list of checkable sentences. A signal only moves
+the score as far as its confidence allows, and missing data pulls a
+score down rather than up: the engine would rather under-rank a
+company than invent certainty.
+
+The config decides which signals run and with what parameters. The
+bundled config is the China succession example. Set
+MA_ENGINE_SCORING_CONFIG to use your own.
 """
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 
 import yaml
 
 from ma_engine.adapters.base import Company
-from ma_engine.signals import Signal, compute_all
+from ma_engine.signals import Signal, compute
 
-DEFAULT_WEIGHTS = Path(__file__).parent / "weights.yaml"
+DEFAULT_CONFIG = Path(__file__).parent / "config.yaml"
 
 
 @dataclass
@@ -38,15 +44,32 @@ class ScoreReport:
         return "\n".join(lines)
 
 
-def load_weights(path: Path | str = DEFAULT_WEIGHTS) -> dict[str, float]:
+def _config_path(path: Path | str | None) -> str:
+    if path:
+        return str(path)
+    return os.environ.get("MA_ENGINE_SCORING_CONFIG") or str(DEFAULT_CONFIG)
+
+
+@lru_cache(maxsize=8)
+def _load(path: str) -> dict:
     with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)["weights"]
+        config = yaml.safe_load(f) or {}
+    if not config.get("signals"):
+        raise ValueError(f"{path} enables no signals under `signals:`")
+    return config
 
 
-def score_company(company: Company, weights: dict[str, float] | None = None) -> ScoreReport:
-    weights = weights or load_weights()
-    signals = compute_all(company)
+def load_config(path: Path | str | None = None) -> dict:
+    """Read the scoring config (cached)."""
+    return _load(_config_path(path))
 
+
+def score_company(company: Company, config: dict | None = None) -> ScoreReport:
+    config = config or load_config()
+    signals = compute(company, config)
+
+    weights = {k: float((v or {}).get("weight", 0.0))
+               for k, v in config["signals"].items()}
     total_weight = sum(weights.values()) or 1.0
     contributions: dict[str, float] = {}
     for s in signals:
@@ -58,7 +81,7 @@ def score_company(company: Company, weights: dict[str, float] | None = None) -> 
                        contributions=contributions)
 
 
-def rank(companies: list[Company], weights: dict[str, float] | None = None) -> list[ScoreReport]:
-    weights = weights or load_weights()
-    reports = [score_company(c, weights) for c in companies]
+def rank(companies: list[Company], config: dict | None = None) -> list[ScoreReport]:
+    config = config or load_config()
+    reports = [score_company(c, config) for c in companies]
     return sorted(reports, key=lambda r: -r.total)
