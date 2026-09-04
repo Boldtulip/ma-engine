@@ -21,10 +21,11 @@ It cannot know whether an owner wants to sell. The signals are
 proxies, and a high score means a company is worth looking at, not
 that it is for sale. Nothing here is calibrated: no outcome data ships
 with the repository, so the weights and the curves are judgment until
-you fit them to a record of real sales. Where an age is not disclosed
-it is estimated from the owner's given name, which is a probability
-and is labelled as one in the output. The engine ranks and drafts; it
-does not value a company or replace diligence.
+you fit them to a record of real sales. Where an age is not
+disclosed, the engine does not guess one: it derives a lower bound
+from how long the owner has held the company, and says so in the
+output. The engine ranks and drafts; it does not value a company or
+replace diligence.
 
 The version in this repository is set up for one example market,
 China, and runs on synthetic data. The founders who started China's
@@ -53,15 +54,15 @@ needs no API key or account.
 
 ```
   #  score  company                  owner    signal summary
-  1     59  江苏利昌包装有限公司     萧玉珍   萧玉珍 is the only person in the shareholder and executive records.
-  2     58  上海威威电子有限公司     傅解放   傅解放 is the only person in the shareholder and executive records.
+  1     56  山东宏恒汽车有限公司     苏志强   苏志强 is the only person in the shareholder and executive records.
+  2     56  广东宏利汽车有限公司     蒋雪梅   蒋雪梅 has held the role for 32 years (since 1994).
   ...
 ```
 
 To see the full dossier for one company:
 
 ```bash
-ma-engine dossier --name 上海威威
+ma-engine dossier --name 山东宏恒
 ```
 
 The dossier contains the succession analysis, a ranked list of buyer
@@ -154,7 +155,7 @@ capital and change records, but not ages:
 
 | Signal | What it reads | Example of the reason it writes |
 |---|---|---|
-| Owner age | The disclosed age where there is one. Otherwise the owner's given name: Chinese given names follow strong generational fashions, so 建国 points to a birth around 1950 and 子轩 to around 2005. | "王建国 is estimated around 71 years old (given name '建国' peaks in the 1950s)." |
+| Owner age | The disclosed age where there is one. Otherwise a lower bound: somebody who has been the legal representative for 33 years was old enough to run a company 33 years ago. | "No age on record for 王建国, who has held the role since 1993, so is at least about 63." |
 | Owner tenure | Change records for the legal representative, which are public. | "王建国 has held the role for 34 years (since 1992)." |
 | Visible heir | Whether a younger person with the owner's surname appears among the shareholders or executives. | "None of the 3 other people on record share the owner's surname 王." |
 | Sell pressure | Pledged equity (股权出质, public) and published litigation. | "89% of the controlling stake is pledged." |
@@ -172,11 +173,11 @@ business that is still easy to hand over. So the curve rises through
 the fifties, peaks between about 63 and 72, and declines after that
 without reaching zero.
 
-An age estimated from a name is given about half the confidence of a
-disclosed age, so it moves the score half as far. The bundled table of
-names and birth cohorts is a small demonstration subset; for serious
-use, replace it with the full ChineseNames database (Bao et al.,
-birth-year distributions covering 1.2 billion people, 1930-2008).
+A bound gets about half the confidence of a disclosed age, so it
+moves the score half as far, and half again where the appointment date
+is missing and only the founding year is known. Note that the bound
+and the tenure signal come from the same fact, so when no age is
+disclosed those two signals are not independent.
 
 None of these numbers is calibrated. The way to improve them is to
 compare them against a record of which companies actually sold, and
@@ -307,7 +308,6 @@ set `MA_ENGINE_KNOWLEDGE_DIR` to that folder.
 - [ ] Resolve controllers held through intermediate holding companies.
       Today these are classed as "other legal person" instead of being
       traced up the chain.
-- [ ] Integrate the full ChineseNames cohort database.
 - [ ] Reference implementation of the QCC adapter.
 - [ ] Match against a real universe of acquirers, not only buyer types.
 - [ ] A second example market.

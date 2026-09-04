@@ -15,8 +15,8 @@ from typing import Iterable, Optional
 class Person:
     """A shareholder or executive. Age is optional because Chinese
     registries do not publish it for private companies; when it is
-    missing, the engine estimates it from the given name (see
-    signals/age.py)."""
+    missing, the engine derives a lower bound from how long the owner
+    has held the role (see signals/age.py)."""
 
     name: str
     role: str = ""                # e.g. "股东", "董事长", "监事"

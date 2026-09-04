@@ -2,7 +2,7 @@ from ma_engine.adapters.base import Company, Person
 from ma_engine.adapters.dummy import DummyAdapter
 from ma_engine.matching.matcher import match_buyers
 from ma_engine.scoring.engine import rank, score_company
-from ma_engine.signals.age import estimate_age, split_name
+from ma_engine.signals.age import age_floor, split_name
 
 
 def old_founder_no_heir() -> Company:
@@ -13,7 +13,7 @@ def old_founder_no_heir() -> Company:
         founded_year=1993,
         legal_rep="王建国",
         legal_rep_since=1993,
-        shareholders=[Person("王建国", "股东", 100.0)],
+        shareholders=[Person("王建国", "实际控制人", 100.0)],
         executives=[Person("王建国", "执行董事")],
         revenue_m=120.0,
         net_profit_m=10.0,
@@ -29,8 +29,9 @@ def young_founder_with_heir() -> Company:
         founded_year=2015,
         legal_rep="李浩",
         legal_rep_since=2015,
-        shareholders=[Person("李浩", "股东", 60.0), Person("李子轩", "股东", 40.0)],
-        executives=[Person("李浩", "执行董事")],
+        shareholders=[Person("李浩", "实际控制人", 60.0, age=45),
+                      Person("李子轩", "股东", 40.0, age=24)],
+        executives=[Person("李浩", "执行董事", age=45)],
         revenue_m=80.0,
         net_profit_m=6.0,
         source="test",
@@ -55,10 +56,34 @@ def test_split_name():
     assert split_name("欧阳修文") == ("欧阳", "修文")
 
 
-def test_name_cohort_age():
-    age, conf, _ = estimate_age("王建国", year=2026)
-    assert age is not None and age > 65
-    assert conf > 0
+def test_age_floor_from_tenure():
+    """A long tenure puts a floor under the owner's age: they were old
+    enough to run a company when they started."""
+    company = old_founder_no_heir()          # in the role since 1993
+    floor, since = age_floor(company, 30, year=2026)
+    assert since == 1993
+    assert floor == 30 + (2026 - 1993)
+
+    # No start date and no founding year means no bound is offered.
+    bare = Company(name="x", legal_rep="王建国")
+    assert age_floor(bare, 30, year=2026) == (None, None)
+
+
+def test_age_signal_says_it_is_a_bound_not_a_measurement():
+    report = score_company(old_founder_no_heir())
+    age = next(s for s in report.signals if s.key == "founder_age")
+    assert "at least about" in age.reason
+    assert age.confidence < 0.95        # below a disclosed age
+
+
+def test_disclosed_age_beats_a_bound_on_confidence():
+    disclosed = Company(
+        name="y", legal_rep="王建国", legal_rep_since=2020,
+        shareholders=[Person("王建国", "实际控制人", 100.0, age=66)])
+    report = score_company(disclosed)
+    age = next(s for s in report.signals if s.key == "founder_age")
+    assert "66 years old (disclosed)" in age.reason
+    assert age.confidence == 0.95
 
 
 def test_old_founder_scores_higher():

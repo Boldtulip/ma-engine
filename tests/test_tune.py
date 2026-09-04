@@ -13,20 +13,20 @@ import pytest
 from ma_engine import tune as t
 from ma_engine.adapters.dummy import DummyAdapter
 from ma_engine.scoring.engine import DEFAULT_CONFIG, load_config
-from ma_engine.signals.age import estimate_age
+from ma_engine.signals.age import age_floor
 
 
 def labelled_companies(n: int = 300, seed: int = 1):
-    """Sold if the owner is estimated 60-72 and has no same-surname
-    younger person on record, flipped 15% of the time."""
+    """Sold if the owner's age floor is 60-80 and no same-surname
+    younger person is on record, flipped 15% of the time."""
     rng = random.Random(seed)
     pairs = []
     for c in DummyAdapter(n=n, seed=seed).companies():
         owner = c.controller()
-        age = estimate_age(owner.name)[0] if owner else None
+        age = age_floor(c, 30)[0] if owner else None
         heir = any(p.name != owner.name and p.name[0] == owner.name[0]
                    for p in c.shareholders + c.executives) if owner else False
-        sold = 1 if (age and 60 <= age <= 72 and not heir) else 0
+        sold = 1 if (age and 60 <= age <= 80 and not heir) else 0
         if rng.random() < 0.15:
             sold = 1 - sold
         pairs.append((c, sold))

@@ -20,7 +20,8 @@ SURNAMES = ["王", "李", "张", "刘", "陈", "杨", "黄", "赵", "周", "吴"
             "蔡", "彭", "潘", "袁", "董", "余", "苏", "叶", "吕", "魏",
             "蒋", "沈", "杜", "丁", "任", "姚", "卢", "傅", "钟", "姜"]
 
-# Given names grouped by generation (matching the cohort table).
+# Given names grouped by generation, so the synthetic families
+# look plausible.
 OLD_GIVEN = ["建国", "建华", "国庆", "解放", "和平", "援朝", "建军", "卫东",
              "卫国", "红卫", "跃进", "志强", "志国", "建平", "国强", "爱国",
              "春华", "秀兰", "桂英", "秀英", "玉兰", "凤英", "秀珍", "玉珍",

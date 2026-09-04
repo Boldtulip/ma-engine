@@ -9,20 +9,20 @@
 <text x="22" y="46" fill="#7d8590" xml:space="preserve">$ ma-engine demo</text>
 <text x="22" y="88" fill="#d29922" xml:space="preserve">MA Engine, demo on synthetic data.</text>
 <text x="22" y="109" fill="#d29922" xml:space="preserve">Every company and person below is fictional.</text>
-<text x="22" y="151" fill="#c9d1d9" xml:space="preserve">Screened 400 companies. Top 7 by succession score:</text>
+<text x="22" y="151" fill="#c9d1d9" xml:space="preserve">Screened 200 companies. Top 5 by succession score:</text>
 <text x="22" y="193" fill="#8b949e" font-weight="600" xml:space="preserve">  #  score  company                owner    signal summary</text>
 <text x="22" y="214" fill="#30363d" xml:space="preserve">  ────────────────────────────────────────────────────────────────────────────</text>
-<text x="22" y="235" fill="#c9d1d9" xml:space="preserve">  1     59  浙江昌泰建材有限公司   丁凤英   estimated around 71 (&#x27;凤英&#x27; peaks in the 1950s).</text>
-<text x="22" y="256" fill="#c9d1d9" xml:space="preserve">  2     59  江苏利昌包装有限公司   萧玉珍   only person in the shareholder and executive records.</text>
-<text x="22" y="277" fill="#c9d1d9" xml:space="preserve">  3     58  上海威威电子有限公司   傅解放   only person in the shareholder and executive records.</text>
-<text x="22" y="298" fill="#c9d1d9" xml:space="preserve">  4     58  江苏昌盛塑料有限公司   马建国   only person in the shareholder and executive records.</text>
-<text x="22" y="319" fill="#c9d1d9" xml:space="preserve">  5     58  广东永恒包装有限公司   袁和平   only person in the shareholder and executive records.</text>
+<text x="22" y="235" fill="#c9d1d9" xml:space="preserve">  1     56  山东宏恒汽车有限公司   苏志强   only person in the shareholder and executive records.</text>
+<text x="22" y="256" fill="#c9d1d9" xml:space="preserve">  2     56  广东宏利汽车有限公司   蒋雪梅   has held the role for 32 years (since 1994).</text>
+<text x="22" y="277" fill="#c9d1d9" xml:space="preserve">  3     56  上海威威电子有限公司   傅解放   only person in the shareholder and executive records.</text>
+<text x="22" y="298" fill="#c9d1d9" xml:space="preserve">  4     54  浙江丰盛建材有限公司   刘帅     only person in the shareholder and executive records.</text>
+<text x="22" y="319" fill="#c9d1d9" xml:space="preserve">  5     54  福建盛瑞纺织有限公司   许萍     has held the role for 33 years (since 1993).</text>
 <text x="22" y="361" fill="#c9d1d9" xml:space="preserve">Strongest candidate in detail:</text>
-<text x="22" y="403" fill="#e6edf3" font-weight="600" xml:space="preserve">浙江昌泰建材有限公司, succession score 59/100</text>
-<text x="22" y="424" fill="#3fb950" xml:space="preserve">  [+19.2] 丁凤英 is estimated around 71 years old.</text>
-<text x="22" y="445" fill="#3fb950" xml:space="preserve">  [+18.0] 丁凤英 has held the role for 35 years (since 1991).</text>
-<text x="22" y="466" fill="#3fb950" xml:space="preserve">  [+16.2] No other person on record shares the owner&#x27;s surname 丁.</text>
-<text x="22" y="487" fill="#3fb950" xml:space="preserve">  [ +6.0] 71% of the controlling stake is pledged.</text>
+<text x="22" y="403" fill="#e6edf3" font-weight="600" xml:space="preserve">山东宏恒汽车有限公司, succession score 56/100</text>
+<text x="22" y="424" fill="#3fb950" xml:space="preserve">  [+21.0] 苏志强 is the only person in the shareholder and executive records.</text>
+<text x="22" y="445" fill="#3fb950" xml:space="preserve">  [+18.0] 苏志强 has held the role for 36 years (since 1990).</text>
+<text x="22" y="466" fill="#3fb950" xml:space="preserve">  [+17.5] No age on record for 苏志强, who has held the role since 1990,</text>
+<text x="22" y="487" fill="#3fb950" xml:space="preserve">          so is at least about 66.</text>
 <text x="22" y="529" fill="#c9d1d9" xml:space="preserve">Buyer shortlist:</text>
 <text x="22" y="550" fill="#58a6ff" xml:space="preserve">  - 同行 / 供应链买家 (Trade buyer) (fit 70%)</text>
 <text x="22" y="571" fill="#58a6ff" xml:space="preserve">  - 地方国资平台 (Local state platform) (fit 60%)</text>

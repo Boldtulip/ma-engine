@@ -1,23 +1,20 @@
-"""Owner age: in the China example, the strongest signal.
+"""Owner age.
 
-Chinese registries do not publish the age of private-company owners.
-When an exact age is disclosed (listed companies), it is used. When it
-is not, a birth cohort is estimated from the owner's given name.
-Given names in China follow strong generational fashions: a founder
-named 建国 was almost certainly born around 1950, one named 子轩
-around 2005. The bundled table is a small demonstration subset; for
-serious use, load the full ChineseNames database (Bao et al.,
-1930-2008, built on official records of 1.2 billion people).
+Where the records disclose an age, it is used. Where they do not, an
+age is not guessed: a lower bound is derived from the company's own
+records instead. Somebody who has been the legal representative since
+the company was founded thirty years ago was old enough to found a
+company then, so they are at least thirty years older than that now.
+The bound is stated as a bound in the output, and carries lower
+confidence than a disclosed age.
 
-The mapping from age to score is a curve of (age, value) points in
-the scoring config. See config.yaml for the reasoning behind its shape.
+The mapping from age to score is a curve of (age, value) points in the
+scoring config. See config.yaml for the reasoning behind its shape.
 """
 
 from __future__ import annotations
 
-import csv
 import datetime
-from pathlib import Path
 from typing import Optional
 
 from ma_engine.adapters.base import Company
@@ -36,17 +33,9 @@ DEFAULT_CURVE = [
     (85, 0.45), (95, 0.40),
 ]
 
-_COHORTS: dict[str, int] = {}
-
-
-def _load_cohorts() -> dict[str, int]:
-    global _COHORTS
-    if not _COHORTS:
-        path = Path(__file__).parent / "name_cohorts.csv"
-        with open(path, encoding="utf-8") as f:
-            for row in csv.DictReader(f):
-                _COHORTS[row["given_name"]] = int(row["peak_decade"])
-    return _COHORTS
+# Nobody founds or takes charge of a company much younger than this, so
+# years in the role plus this number is a floor on the person's age.
+DEFAULT_MIN_AGE_AT_APPOINTMENT = 30
 
 
 def split_name(full_name: str) -> tuple[str, str]:
@@ -56,37 +45,19 @@ def split_name(full_name: str) -> tuple[str, str]:
     return full_name[:1], full_name[1:]
 
 
-def _cohort_phrase(peak: int) -> str:
-    """'the 1950s' for a round decade, 'the mid-1950s' for a mid-decade year."""
-    return f"the {peak}s" if peak % 10 == 0 else f"the mid-{peak - 5}s"
+def age_floor(company: Company, min_age_at_appointment: int,
+              year: Optional[int] = None) -> tuple[Optional[int], Optional[int]]:
+    """A lower bound on the owner's age, and the year it is counted from.
 
-
-def estimate_age(full_name: str, year: Optional[int] = None) -> tuple[Optional[int], float, str]:
-    """Return (estimated age, confidence, method).
-
-    Confidence is low by design: a name narrows the birth decade, it
-    does not prove it.
+    Uses the year the current legal representative took the role. Where
+    that is not recorded, the founding year is used, which is weaker:
+    the company may be on its third chairman.
     """
     year = year or datetime.date.today().year
-    cohorts = _load_cohorts()
-    _, given = split_name(full_name)
-    if not given:
-        return None, 0.0, "no given name"
-
-    if given in cohorts:
-        birth = cohorts[given] + 5  # middle of the decade
-        return (year - birth, 0.55,
-                f"given name '{given}' peaks in {_cohort_phrase(cohorts[given])}")
-
-    # Fall back to single characters inside the given name.
-    for ch in given:
-        if ch in cohorts:
-            birth = cohorts[ch] + 5
-            return (year - birth, 0.35,
-                    f"name character '{ch}' peaks in "
-                    f"{_cohort_phrase(cohorts[ch])}")
-
-    return None, 0.0, "name not in cohort table"
+    since = company.legal_rep_since or company.founded_year
+    if not since or since > year:
+        return None, None
+    return min_age_at_appointment + (year - since), since
 
 
 def _age_to_score(age: int, curve: list | None = None) -> float:
@@ -107,26 +78,35 @@ def founder_age_signal(company: Company, params: dict | None = None) -> Signal:
     params = params or {}
     curve = params.get("curve")
     disclosed_conf = float(params.get("disclosed_confidence", 0.95))
+    floor_conf = float(params.get("age_floor_confidence", 0.5))
+    min_age = int(params.get("min_age_at_appointment",
+                             DEFAULT_MIN_AGE_AT_APPOINTMENT))
 
     owner = company.controller()
     if owner is None:
-        return Signal("founder_age", 0.0, 0.0, "No individual owner found in the records.")
+        return Signal("founder_age", 0.0, 0.0,
+                      "No individual owner found in the records.")
 
     if owner.age is not None:
-        return Signal(
-            "founder_age",
-            _age_to_score(owner.age, curve),
-            disclosed_conf,
-            f"{owner.name} is {owner.age} years old (disclosed).",
-        )
+        return Signal("founder_age", _age_to_score(owner.age, curve),
+                      disclosed_conf,
+                      f"{owner.name} is {owner.age} years old (disclosed).")
 
-    est, conf, method = estimate_age(owner.name)
-    if est is None:
+    floor, since = age_floor(company, min_age)
+    if floor is None:
         return Signal("founder_age", 0.0, 0.0,
-                      f"Age of {owner.name} is unknown and the name gives no cohort hint.")
+                      f"No age on record for {owner.name}, and no start date "
+                      f"to put a bound on it.")
+
+    known_start = company.legal_rep_since is not None
+    source = (f"has held the role since {since}" if known_start
+              else f"has been on record since the company was founded in {since}")
+    # A bound cannot be pushed through the falling side of the curve
+    # honestly: the owner may be well past the peak. Score it at the
+    # bound and let the lower confidence carry the uncertainty.
     return Signal(
-        "founder_age",
-        _age_to_score(est, curve),
-        conf,
-        f"{owner.name} is estimated around {est} years old ({method}).",
+        "founder_age", _age_to_score(floor, curve),
+        floor_conf if known_start else floor_conf * 0.6,
+        f"No age on record for {owner.name}, who {source}, so is at "
+        f"least about {floor}.",
     )

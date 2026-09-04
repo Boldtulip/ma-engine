@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from ma_engine.adapters.base import Company
 from ma_engine.signals import Signal, signal
-from ma_engine.signals.age import estimate_age, split_name
+from ma_engine.signals.age import split_name
 
 
 @signal("heir_absence")
@@ -48,11 +48,12 @@ def heir_absence_signal(company: Company, params: dict | None = None) -> Signal:
             f"the owner's surname {surname}.",
         )
 
-    # Someone shares the surname. Check whether they look like a younger
-    # generation (disclosed or name-estimated age gap of `gap` years or more).
-    owner_age = owner.age or estimate_age(owner.name)[0]
+    # Someone shares the surname. Where both ages are on record, an age
+    # gap of `gap` years or more marks them as the next generation.
+    # Where they are not, the picture stays unclear rather than guessed.
+    owner_age = owner.age
     for p in same_surname:
-        p_age = p.age or estimate_age(p.name)[0]
+        p_age = p.age
         if owner_age and p_age and owner_age - p_age >= gap:
             return Signal(
                 "heir_absence", 0.1, 0.6,

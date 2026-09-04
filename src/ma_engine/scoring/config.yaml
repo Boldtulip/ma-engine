@@ -37,9 +37,12 @@ signals:
       - [80, 0.60]
       - [85, 0.45]
       - [95, 0.40]
-    # Confidence given to an age read from a disclosure versus one
-    # estimated from the owner's given name.
     disclosed_confidence: 0.95
+    # Where no age is disclosed, a lower bound is derived from how long
+    # the owner has held the role: nobody takes charge of a company much
+    # younger than this, so years in the role plus this number is a floor.
+    min_age_at_appointment: 30
+    age_floor_confidence: 0.5
 
   owner_tenure:
     weight: 0.20

@@ -30,10 +30,10 @@ def _row(rank: int, report: ScoreReport) -> dict:
 
     age = owner.age if owner else None
     if age is None and age_signal:
-        # Pull the estimate out of the reason rather than recomputing it.
+        # Pull the bound out of the reason rather than recomputing it.
         import re
 
-        m = re.search(r"around (\d+) years old", age_signal.reason)
+        m = re.search(r"at least about (\d+)", age_signal.reason)
         age = int(m.group(1)) if m else None
 
     return {
@@ -44,7 +44,7 @@ def _row(rank: int, report: ScoreReport) -> dict:
         "region": c.region,
         "owner": owner.name if owner else "",
         "owner_age": age if age is not None else "",
-        "age_source": "disclosed" if disclosed else ("estimated" if age else "unknown"),
+        "age_source": "disclosed" if disclosed else ("tenure_floor" if age else "unknown"),
         "owner_since": c.legal_rep_since or "",
         "revenue_m": f"{c.revenue_m:.1f}" if c.revenue_m else "",
         "net_profit_m": f"{c.net_profit_m:.1f}" if c.net_profit_m else "",
@@ -81,7 +81,8 @@ def _heading(reports: list[ScoreReport]) -> tuple[str, str]:
         return (
             "Succession watchlist, demonstration data",
             "Every company and person below is fictional, generated to "
-            "demonstrate the scoring. Ages are estimated from given names. "
+            "demonstrate the scoring. Ages shown are lower bounds derived "
+            "from how long the owner has held the company. "
             "Nothing here refers to a real business.",
         )
     return (
@@ -106,13 +107,14 @@ def write_markdown(reports: list[ScoreReport], path: str | Path,
     ]
     for i, report in enumerate(reports[:top], 1):
         r = _row(i, report)
-        age = f"{r['owner_age']}" if r["owner_age"] != "" else ", "
-        if r["age_source"] == "estimated" and age != ", ":
+        age = f"{r['owner_age']}" if r["owner_age"] != "" else "-"
+        if r["age_source"] == "tenure_floor" and age != "-":
             age += "*"
         lines.append(
             f"| {i} | {r['score']} | {r['company']} | {r['owner']} | {age} | "
             f"{r['industry']} | {r['top_reason']} |")
-    lines += ["", "\\* estimated from the owner's given name, not disclosed.", ""]
+    lines += ["", "\\* a lower bound from the owner's tenure, not a disclosed "
+              "age.", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     return path
 
