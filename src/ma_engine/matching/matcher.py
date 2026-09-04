@@ -48,6 +48,15 @@ def _default_knowledge_dir() -> Path:
 KNOWLEDGE_DIR = _default_knowledge_dir()
 
 
+# Trades where small companies routinely buy each other: low
+# differentiation, capacity that transfers, and buyers who already know
+# the seller. Extend this for your own market.
+FRAGMENTED_TRADES = (
+    "五金", "包装", "印刷", "塑料", "建材", "纺织", "服装", "食品",
+    "零部件", "机械", "化工", "铸造", "模具", "物流",
+)
+
+
 @dataclass
 class BuyerMatch:
     key: str
@@ -148,9 +157,39 @@ def match_buyers(company: Company, knowledge: dict | None = None) -> list[BuyerM
                            "to date, so treat this as fit, not as available money")
 
         elif b["key"] == "trade_buyer":
-            fit += 0.2
-            reasons.append("peers in the same industry cluster already trust the "
-                           "company; this is where most SME deals actually close")
+            # A neighbour in the same trade is the likeliest buyer of a
+            # small company, but not equally for every company. What
+            # varies: whether the industry is fragmented enough that
+            # peers consolidate, whether the company is small enough to
+            # be bought out of a peer's own cash, and whether anything
+            # on the record would put off a buyer who knows the owner.
+            fragmented = any(w in company.industry for w in FRAGMENTED_TRADES)
+            if fragmented:
+                fit += 0.25
+                reasons.append(f"{company.industry} is fragmented and peers buy "
+                               f"each other's capacity")
+            else:
+                fit += 0.05
+                reasons.append("peers in the same trade are the usual buyers at "
+                               "this size")
+
+            if revenue and revenue <= 150:
+                fit += 0.15
+                reasons.append(f"at {revenue:.0f}M CNY of revenue a peer can pay "
+                               f"from its own cash")
+            elif revenue and revenue > 500:
+                fit -= 0.15
+                reasons.append(f"{revenue:.0f}M CNY of revenue is beyond what most "
+                               f"peers fund without outside money")
+
+            if company.pledge_ratio > 0.5:
+                fit -= 0.15
+                reasons.append("a heavily pledged stake has to be cleared before "
+                               "a peer will sign")
+            if company.litigation_count >= 5:
+                fit -= 0.1
+                reasons.append("an active litigation record travels fast inside "
+                               "a cluster")
 
         elif b["key"] == "foreign_strategic":
             if profit > 10:
