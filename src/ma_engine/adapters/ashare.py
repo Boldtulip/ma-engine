@@ -412,6 +412,10 @@ class AShareAdapter(Adapter):
 
     def _from_cache(self) -> Iterable[Company]:
         raw = json.loads(self.cache_path.read_text(encoding="utf-8"))
+        # The point-in-time adapter writes {"companies": [...], ...};
+        # this adapter writes a bare list. Read both.
+        if isinstance(raw, dict):
+            raw = raw.get("companies", [])
         for item in raw:
             item["shareholders"] = [Person(**p) for p in item.get("shareholders", [])]
             item["executives"] = [Person(**p) for p in item.get("executives", [])]

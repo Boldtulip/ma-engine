@@ -114,6 +114,21 @@ def cmd_tune(args: argparse.Namespace) -> None:
     print(f"Use it with: MA_ENGINE_SCORING_CONFIG={args.out} ma-engine score ...")
 
 
+def cmd_backtest(args: argparse.Namespace) -> None:
+    import datetime as dt
+
+    from ma_engine import backtest
+
+    ws, we = (dt.date.fromisoformat(x) for x in args.window.split("~"))
+    backtest.run(
+        fiscal_year=args.fiscal_year, window_start=ws, window_end=we,
+        out_dir=Path(args.out_dir), live_cache=Path(args.live_cache),
+        negatives=None if args.negatives < 0 else args.negatives,
+        seed=args.seed, workers=args.workers, config_path=args.config,
+        episodes_path=Path(args.episodes) if args.episodes else None, k=args.k,
+    )
+
+
 def cmd_dossier(args: argparse.Namespace) -> None:
     companies = _load(args)
     hits = [c for c in companies if args.name in c.name]
@@ -184,6 +199,24 @@ def main() -> None:
     p_tune.add_argument("--seed", type=int, default=0)
     p_tune.add_argument("--out", default="tuned_config.yaml")
     p_tune.set_defaults(func=cmd_tune)
+
+    p_bt = sub.add_parser("backtest", help="score companies as of a past fiscal "
+                          "year and check who came up for sale afterwards")
+    p_bt.add_argument("--fiscal-year", type=int, required=True,
+                      help="annual report year to take the features from")
+    p_bt.add_argument("--window", required=True,
+                      help="outcome window, e.g. 2025-05-01~2026-09-04")
+    p_bt.add_argument("--live-cache", default="data/ashare_scored.json",
+                      help="live A-share cache, used for the population")
+    p_bt.add_argument("--episodes", help="reuse a control_episodes.csv")
+    p_bt.add_argument("--negatives", type=int, default=1000,
+                      help="negatives to sample; -1 for all")
+    p_bt.add_argument("--workers", type=int, default=8)
+    p_bt.add_argument("--seed", type=int, default=0)
+    p_bt.add_argument("--config", help="scoring config to evaluate")
+    p_bt.add_argument("--k", type=int, default=50)
+    p_bt.add_argument("--out-dir", default="data/backtest")
+    p_bt.set_defaults(func=cmd_backtest)
 
     p_doss = sub.add_parser("dossier", help="full dossier for one company")
     p_doss.add_argument("--name", required=True, help="company name or part of it")

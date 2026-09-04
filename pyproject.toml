@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-ashare = ["requests>=2.31"]
+ashare = ["requests>=2.31", "pypdf>=4.0"]
 llm = ["anthropic>=0.40"]
 tune = ["optuna>=3.6"]
 dev = ["pytest>=8.0", "optuna>=3.6"]
