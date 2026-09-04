@@ -28,11 +28,12 @@ def heir_absence_signal(company: Company, params: dict | None = None) -> Signal:
         return Signal("heir_absence", 0.0, 0.0, "No individual owner found in the records.")
 
     surname, _ = split_name(owner.name)
-    others = [
-        p
+    # One person can appear both as a shareholder and as an officer.
+    others = list({
+        p.name: p
         for p in company.shareholders + company.executives
         if not p.is_company and p.name != owner.name
-    ]
+    }.values())
     same_surname = [p for p in others if split_name(p.name)[0] == surname]
 
     if not others:

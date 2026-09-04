@@ -74,6 +74,17 @@ def test_heir_detected_across_naming_conventions():
     signal = heir_absence_signal(latin, {"generation_gap_years": 18})
     assert signal.score < 0.5
     assert "Jonas Vogel" in signal.reason
+    # He is on the board and holds shares, but he is one person.
+    assert signal.reason.count("Jonas Vogel") == 1
+
+    no_ages = Company(
+        name="Vogel GmbH", legal_rep="Petra Vogel", legal_rep_since=2011,
+        shareholders=[Person("Petra Vogel", "实际控制人", 60.0),
+                      Person("Jonas Vogel", "股东", 40.0)],
+        executives=[Person("Petra Vogel", "GF"), Person("Jonas Vogel", "Prokurist")])
+    unclear = heir_absence_signal(no_ages, {"generation_gap_years": 18})
+    assert unclear.reason.count("Jonas Vogel") == 1
+    assert "unclear" in unclear.reason
 
 
 def test_age_floor_from_tenure():
