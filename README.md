@@ -147,8 +147,8 @@ capital and change records, but not ages:
 | Sell pressure | Pledged equity (股权出质, public) and published litigation. | "89% of the controlling stake is pledged." |
 
 Every number behind them is in the config: the age curve, the tenure
-thresholds, the generation gap used to spot an heir, the weights. Two
-of those numbers are worth explaining.
+thresholds, the generation gap used to spot an heir, the weights. The
+age curve is the one worth explaining.
 
 The age curve does not simply rise with age. An owner still running
 the company at 82 has shown over many years that he does not intend to
@@ -206,11 +206,11 @@ from the repository root.
 Everything in the config is a number, so the whole scoring step can be
 treated as a small model and fitted. The score is a sum over signals
 of weight times confidence times a curve or threshold applied to one
-feature. In statistical terms that is an additive model: each signal
-is a shape function of one feature, and the weights are its
-coefficients. There is no hidden layer, so it is not a neural network;
-it is the kind of model where every term can be read off and checked,
-which is what we want here.
+feature. That is an additive model: each signal is a shape function of one
+feature, and the weights are its coefficients. There are no
+interactions between features and no hidden layer, so every term can
+be read off and checked. Fitting only the weights, and leaving the
+curves as they are, is logistic regression on the signal values.
 
 What it needs is a record of outcomes: which companies actually
 changed hands. That record is yours. Put it in a CSV with two columns,

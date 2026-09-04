@@ -142,8 +142,8 @@ def match_buyers(company: Company, knowledge: dict | None = None) -> list[BuyerM
             else:
                 fit -= 0.25
                 reasons.append("outside the size range a search fund can buy and run")
-            # Fit is not liquidity: no mainland search fund has closed
-            # a deal. Say so every time rather than flattering the rank.
+            # No mainland search fund has completed an acquisition, so
+            # the rationale says that alongside the fit score.
             reasons.append("but no search fund has completed a mainland acquisition "
                            "to date, so treat this as fit, not as available money")
 

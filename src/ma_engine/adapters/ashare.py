@@ -384,9 +384,9 @@ class AShareAdapter(Adapter):
             region=org.get("REGIONBK") or "",
             founded_year=founded,
             legal_rep=(chairman or {}).get("name") or org.get("CHAIRMAN") or "",
-            # Only a real appointment date counts as tenure. The signal
-            # falls back to the founding year itself, at lower
-            # confidence, rather than us asserting a tenure we cannot see.
+            # Only a real appointment date counts as tenure. Where it is
+            # missing the tenure signal falls back to the founding year at
+            # lower confidence.
             legal_rep_since=since,
             shareholders=shareholders,
             executives=people,
@@ -412,8 +412,6 @@ class AShareAdapter(Adapter):
 
     def _from_cache(self) -> Iterable[Company]:
         raw = json.loads(self.cache_path.read_text(encoding="utf-8"))
-        # The point-in-time adapter writes {"companies": [...], ...};
-        # this adapter writes a bare list. Read both.
         if isinstance(raw, dict):
             raw = raw.get("companies", [])
         for item in raw:
