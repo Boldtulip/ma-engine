@@ -87,8 +87,9 @@ def _heading(reports: list[ScoreReport]) -> tuple[str, str]:
         )
     return (
         "Succession watchlist",
-        "Scored from the supplied data. Ages marked as disclosed come from "
-        "the records; any others are estimates and are labelled.",
+        "Scored from the supplied data. An age is either disclosed in the "
+        "records or a lower bound derived from how long the owner has held "
+        "the company, and the two are marked differently.",
     )
 
 
