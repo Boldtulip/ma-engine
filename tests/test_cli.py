@@ -38,7 +38,7 @@ def test_demo_runs(capsys):
 
 
 def test_dossier_runs_without_llm(capsys):
-    run(["dossier", "--name", "有限公司", "--n", "30", "--no-llm"])
+    run(["dossier", "--name", "示例", "--n", "30", "--no-llm"])
     assert "## Succession analysis" in capsys.readouterr().out
 
 

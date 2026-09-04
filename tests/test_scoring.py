@@ -137,3 +137,11 @@ def test_rank_and_match_on_dummy_data():
     assert reports[0].total >= reports[-1].total
     matches = match_buyers(reports[0].company)
     assert matches and all(0 <= m.fit <= 1 for m in matches)
+
+
+def test_generated_company_names_are_marked_as_examples():
+    """Random Chinese characters land on real brands often enough to
+    matter, so every generated name is prefixed to show it is a
+    placeholder."""
+    names = [c.name for c in DummyAdapter(n=100).companies()]
+    assert all(n.startswith("示例") for n in names)

@@ -1,10 +1,18 @@
 """Synthetic demo data.
 
 Generates a deterministic set of fictional Chinese SMEs whose owners,
-shareholders, and finances look statistically plausible. Every name
-and company here is invented; any match with a real person or company
-is coincidence. It is included so the engine runs without any setup;
-real data comes in through the other adapters.
+shareholders and finances look statistically plausible. It is included
+so the engine runs without any setup; real data comes in through the
+other adapters.
+
+Every company name starts with 示例, meaning "example". China has tens
+of millions of registered companies, so any plausible-looking name
+will belong to a real one somewhere, and randomly combining common
+characters produces well-known brands often enough to matter. The
+prefix makes it clear that these are placeholders. Person names cannot
+be made unique in the same way, since ordinary Chinese names are
+shared by many real people; they are randomly assembled and refer to
+nobody.
 """
 
 from __future__ import annotations
@@ -60,7 +68,7 @@ class DummyAdapter(Adapter):
             region = rng.choice(REGIONS)
             industry = rng.choice(INDUSTRIES)
             word = rng.choice(COMPANY_WORDS) + rng.choice(COMPANY_WORDS)
-            cname = f"{region[:2]}{word}{industry[:2]}有限公司"
+            cname = f"示例{region[:2]}{word}{industry[:2]}有限公司"
 
             founded = rng.randint(1988, 2018)
             own_pct = rng.choice([100.0, 90.0, 80.0, 70.0, 60.0, 51.0])

@@ -38,7 +38,7 @@ years earlier, and there the hard part was finding the companies
 before anyone else did.
 
 <p align="center">
-  <img src="docs/demo.svg" alt="Terminal output of ma-engine demo: a ranked list of fictional companies with a succession score and a one-line reason for each" width="880">
+  <img src="docs/demo.svg" alt="Terminal output of ma-engine demo: a ranked list of fictional companies with a succession score and a one-line reason for each" width="920">
 </p>
 
 ## Quickstart
@@ -50,19 +50,23 @@ ma-engine demo
 ```
 
 The demo scores 200 fictional companies and prints the ranking. It
-needs no API key or account.
+needs no API key or account. The names start with 示例, meaning
+example: China has tens of millions of registered companies, so any
+plausible-looking name belongs to a real one somewhere, and the prefix
+keeps the demo data clearly separate from them.
 
 ```
-  #  score  company                  owner    signal summary
-  1     56  山东宏恒汽车有限公司     苏志强   苏志强 is the only person in the shareholder and executive records.
-  2     56  广东宏利汽车有限公司     蒋雪梅   蒋雪梅 has held the role for 32 years (since 1994).
+  #  score  company                    owner    signal summary
+  1     56  示例山东宏恒汽车有限公司   苏志强   only person in the shareholder and executive records.
+  2     56  示例广东宏利汽车有限公司   蒋雪梅   has held the role for 32 years (since 1994).
+  3     54  示例浙江丰盛建材有限公司   刘帅     only person in the shareholder and executive records.
   ...
 ```
 
 To see the full dossier for one company:
 
 ```bash
-ma-engine dossier --name 山东宏恒
+ma-engine dossier --name 示例山东宏恒
 ```
 
 The dossier contains the succession analysis, a ranked list of buyer
