@@ -17,21 +17,14 @@ read back as a list of statements that can be checked one by one. The
 engine then matches each company against buyer types held in an
 editable knowledge base and drafts a dossier.
 
-**Strengths.** Every score decomposes into its reasons, so a ranking
-can be argued with rather than taken on trust. The adapters, signals,
-weights and knowledge base are separate and replaceable, so pointing
-the engine at another market means writing an adapter and a config,
-not changing the engine.
-
-**Limitations.** It cannot know whether an owner wants to sell. The
-signals are proxies, and a high score means a company is worth
-looking at, not that it is for sale. Nothing here is calibrated: no
-outcome data ships with the repository, so the weights and the curves
-are judgment until you fit them to a record of real sales. Where an
-age is not disclosed it is estimated from the owner's given name,
-which is a probability and is labelled as one in the output. The
-engine ranks and drafts; it does not value a company or replace
-diligence.
+It cannot know whether an owner wants to sell. The signals are
+proxies, and a high score means a company is worth looking at, not
+that it is for sale. Nothing here is calibrated: no outcome data ships
+with the repository, so the weights and the curves are judgment until
+you fit them to a record of real sales. Where an age is not disclosed
+it is estimated from the owner's given name, which is a probability
+and is labelled as one in the output. The engine ranks and drafts; it
+does not value a company or replace diligence.
 
 The version in this repository is set up for one example market,
 China, and runs on synthetic data. The founders who started China's
