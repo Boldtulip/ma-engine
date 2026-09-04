@@ -59,7 +59,8 @@ def _print_ranking(companies: list[Company], top: int) -> None:
 
 def cmd_demo(args: argparse.Namespace) -> None:
     print("MA Engine, demo on synthetic data.")
-    print("Every company and person below is fictional.")
+    print("Every company and person below is fictional. Any resemblance "
+          "to a real one is coincidence.")
     _print_ranking(_load(args), args.top)
     print("\nNext: `ma-engine dossier --name <company>` writes the full dossier.")
 

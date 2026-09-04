@@ -79,7 +79,9 @@ dossier; if not, a template version is produced from the same facts.
 
 **This repository ships synthetic data only.** Every company and
 person in the bundled data is invented, and nothing about real
-companies or people is committed here.
+companies or people is committed here. Names are assembled at random
+from common characters, so any resemblance to a real company or person
+is coincidence.
 
 The engine can read real company data through its adapters. If you
 do that, you are responsible for complying with the data-protection

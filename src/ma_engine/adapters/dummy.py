@@ -12,7 +12,7 @@ characters produces well-known brands often enough to matter. The
 prefix makes it clear that these are placeholders. Person names cannot
 be made unique in the same way, since ordinary Chinese names are
 shared by many real people; they are randomly assembled and refer to
-nobody.
+nobody. Any resemblance to a real company or person is coincidence.
 """
 
 from __future__ import annotations

@@ -81,9 +81,9 @@ def _heading(reports: list[ScoreReport]) -> tuple[str, str]:
         return (
             "Succession watchlist, demonstration data",
             "Every company and person below is fictional, generated to "
-            "demonstrate the scoring. Ages shown are lower bounds derived "
-            "from how long the owner has held the company. "
-            "Nothing here refers to a real business.",
+            "demonstrate the scoring, and any resemblance to a real one is "
+            "coincidence. Ages shown are lower bounds derived from how long "
+            "the owner has held the company.",
         )
     return (
         "Succession watchlist",
