@@ -3,25 +3,45 @@
 [![tests](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-MA Engine is an open-source tool for deal sourcing: finding companies
-that are likely to come up for sale before they are put on the market.
-It takes a list of companies, scores each one on signals that the
-owner may be heading towards a sale, writes out the reasons behind
-every score, and produces a short dossier with a buyer shortlist.
+MA Engine is an open-source engine for predictive deal sourcing. It
+ranks companies by how likely the owner is to sell, and writes out the
+reason behind every score.
 
-The data adapters, the signals, the scoring weights and the knowledge
-base are all separate, replaceable parts, so the engine can be pointed
-at any market. The version in this repository is set up for one
-example market, China, and runs on synthetic data.
+It takes a list of companies with their shareholders, officers and
+headline financials. Each company runs through a set of signals: the
+owner's age, how long they have held the company, whether a successor
+is visible in the records, and signs of financial pressure. Each
+signal returns a value, a confidence and one sentence. The score is
+their weighted sum, and the sentences are kept, so a ranking can be
+read back as a list of statements that can be checked one by one. The
+engine then matches each company against buyer types held in an
+editable knowledge base and drafts a dossier.
 
-Why China as the example: the founders who started China's private
-companies in the 1980s and 1990s are reaching retirement age at the
-same time. Estimates put the number of private companies facing a
-succession decision in the next ten years at over three million, and
+**Strengths.** Every score decomposes into its reasons, so a ranking
+can be argued with rather than taken on trust. The adapters, signals,
+weights and knowledge base are separate and replaceable, so pointing
+the engine at another market means writing an adapter and a config,
+not changing the engine.
+
+**Limitations.** It cannot know whether an owner wants to sell. The
+signals are proxies, and a high score means a company is worth
+looking at, not that it is for sale. Nothing here is calibrated: no
+outcome data ships with the repository, so the weights and the curves
+are judgment until you fit them to a record of real sales. Where an
+age is not disclosed it is estimated from the owner's given name,
+which is a probability and is labelled as one in the output. The
+engine ranks and drafts; it does not value a company or replace
+diligence.
+
+The version in this repository is set up for one example market,
+China, and runs on synthetic data. The founders who started China's
+private companies in the 1980s and 1990s are reaching retirement age
+at the same time. Estimates put the number of private companies facing
+a succession decision in the next ten years at over three million, and
 in surveys a large share of the second generation says it does not
 want to take over. Japan went through the same transition about ten
-years earlier, and there the hard part turned out to be finding the
-companies before anyone else did. That is what this engine does.
+years earlier, and there the hard part was finding the companies
+before anyone else did.
 
 <p align="center">
   <img src="docs/demo.svg" alt="Terminal output of ma-engine demo: a ranked list of fictional companies with a succession score and a one-line reason for each" width="880">
