@@ -39,10 +39,22 @@ DEFAULT_MIN_AGE_AT_APPOINTMENT = 30
 
 
 def split_name(full_name: str) -> tuple[str, str]:
-    """Split a Chinese full name into (surname, given name)."""
-    if len(full_name) >= 3 and full_name[:2] in COMPOUND_SURNAMES:
-        return full_name[:2], full_name[2:]
-    return full_name[:1], full_name[1:]
+    """Split a name into (family name, given name).
+
+    Chinese names are written family name first with no separator, so
+    the family name is the first character, or the first two for one of
+    the compound surnames. A name written with spaces, as in most of
+    Europe, puts the family name last.
+    """
+    name = (full_name or "").strip()
+    if not name:
+        return "", ""
+    if " " in name:
+        parts = name.split()
+        return parts[-1], " ".join(parts[:-1])
+    if len(name) >= 3 and name[:2] in COMPOUND_SURNAMES:
+        return name[:2], name[2:]
+    return name[:1], name[1:]
 
 
 def age_floor(company: Company, min_age_at_appointment: int,

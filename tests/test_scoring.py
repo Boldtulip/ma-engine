@@ -54,6 +54,26 @@ def test_age_curve_peaks_in_the_sixties():
 def test_split_name():
     assert split_name("王建国") == ("王", "建国")
     assert split_name("欧阳修文") == ("欧阳", "修文")
+    # Names written with spaces put the family name last.
+    assert split_name("Petra Vogel") == ("Vogel", "Petra")
+    assert split_name("Maria van den Berg") == ("Berg", "Maria van den")
+    assert split_name("") == ("", "")
+
+
+def test_heir_detected_across_naming_conventions():
+    """A family member on the board must be found whichever way the
+    names are written."""
+    from ma_engine.signals.heirs import heir_absence_signal
+
+    latin = Company(
+        name="Vogel GmbH", legal_rep="Petra Vogel", legal_rep_since=2011,
+        shareholders=[Person("Petra Vogel", "实际控制人", 60.0, age=58),
+                      Person("Jonas Vogel", "股东", 40.0, age=31)],
+        executives=[Person("Petra Vogel", "GF", age=58),
+                    Person("Jonas Vogel", "Prokurist", age=31)])
+    signal = heir_absence_signal(latin, {"generation_gap_years": 18})
+    assert signal.score < 0.5
+    assert "Jonas Vogel" in signal.reason
 
 
 def test_age_floor_from_tenure():
