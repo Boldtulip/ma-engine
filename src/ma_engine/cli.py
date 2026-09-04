@@ -78,6 +78,42 @@ def cmd_export(args: argparse.Namespace) -> None:
     print("\n" + export.summarise(reports))
 
 
+def _labelled(args: argparse.Namespace):
+    from ma_engine import tune as t
+
+    pairs = t.match_labels(_load(args), t.read_labels(args.labels))
+    if not pairs:
+        print("No company in the data matched a row in the labels file. The "
+              "`company` column must hold the company name or its source id.",
+              file=sys.stderr)
+        sys.exit(1)
+    return t, pairs
+
+
+def cmd_evaluate(args: argparse.Namespace) -> None:
+    from ma_engine.scoring.engine import load_config
+
+    t, pairs = _labelled(args)
+    print(t.evaluate(pairs, load_config(args.config), k=args.k))
+
+
+def cmd_tune(args: argparse.Namespace) -> None:
+    from ma_engine.scoring.engine import load_config
+
+    t, pairs = _labelled(args)
+    base = load_config(args.config)
+    print(f"Tuning on {len(pairs)} labelled companies, {args.trials} trials, "
+          f"{args.folds}-fold cross-validation.")
+    best, before, after = t.tune(pairs, base, trials=args.trials,
+                                 folds=args.folds, k=args.k, seed=args.seed,
+                                 log=print)
+    print(f"\nHeld-out AUC: {before:.3f} before, {after:.3f} after tuning.")
+    print("On the full labelled set with the tuned config:")
+    print(t.evaluate(pairs, best, k=args.k))
+    print(f"\nWrote {t.write_config(best, args.out)}")
+    print(f"Use it with: MA_ENGINE_SCORING_CONFIG={args.out} ma-engine score ...")
+
+
 def cmd_dossier(args: argparse.Namespace) -> None:
     companies = _load(args)
     hits = [c for c in companies if args.name in c.name]
@@ -125,6 +161,29 @@ def main() -> None:
     p_exp.add_argument("--csv-out", default="data/succession_watchlist.csv")
     p_exp.add_argument("--md-out", default="data/succession_watchlist.md")
     p_exp.set_defaults(func=cmd_export)
+
+    def _data_args(p):
+        p.add_argument("--labels", required=True,
+                       help="CSV with columns company,sold (1 = changed hands)")
+        p.add_argument("--csv", help="score companies from your own CSV")
+        p.add_argument("--ashare", action="store_true", help="use listed-company data")
+        p.add_argument("--cache", help="path to the A-share cache file")
+        p.add_argument("--limit", type=int)
+        p.add_argument("--n", type=int, default=200)
+        p.add_argument("--config", help="scoring config to start from (default: bundled)")
+        p.add_argument("--k", type=int, default=50, help="k for precision@k and lift@k")
+
+    p_eval = sub.add_parser("evaluate", help="measure a config against known outcomes")
+    _data_args(p_eval)
+    p_eval.set_defaults(func=cmd_evaluate)
+
+    p_tune = sub.add_parser("tune", help="fit weights and curves to known outcomes")
+    _data_args(p_tune)
+    p_tune.add_argument("--trials", type=int, default=100)
+    p_tune.add_argument("--folds", type=int, default=5)
+    p_tune.add_argument("--seed", type=int, default=0)
+    p_tune.add_argument("--out", default="tuned_config.yaml")
+    p_tune.set_defaults(func=cmd_tune)
 
     p_doss = sub.add_parser("dossier", help="full dossier for one company")
     p_doss.add_argument("--name", required=True, help="company name or part of it")

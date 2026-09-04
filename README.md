@@ -201,6 +201,40 @@ signals and reshapes the age curve. Run it with
 `MA_ENGINE_SCORING_CONFIG=examples/scoring_config.yaml ma-engine demo`
 from the repository root.
 
+### Fitting the config to outcomes
+
+Everything in the config is a number, so the whole scoring step can be
+treated as a small model and fitted. The score is a sum over signals
+of weight times confidence times a curve or threshold applied to one
+feature. In statistical terms that is an additive model: each signal
+is a shape function of one feature, and the weights are its
+coefficients. There is no hidden layer, so it is not a neural network;
+it is the kind of model where every term can be read off and checked,
+which is what we want here.
+
+What it needs is a record of outcomes: which companies actually
+changed hands. That record is yours. Put it in a CSV with two columns,
+`company` (the name, or the source id such as `ashare:000001`) and
+`sold` (1 or 0), then:
+
+```bash
+pip install -e ".[tune]"
+ma-engine evaluate --labels outcomes.csv --csv companies.csv
+ma-engine tune --labels outcomes.csv --csv companies.csv --trials 200 --out tuned.yaml
+```
+
+`evaluate` reports AUC, precision at the top of the list, and lift
+(how many times more often a sale appears in the top k than at
+random) for the current config. `tune` searches the weights, curve
+points and thresholds with Optuna to maximise AUC on held-out folds,
+reports before and after, and writes the fitted config. Judging on
+held-out folds means the result is measured on companies it was not
+fitted to.
+
+Twenty labelled companies with five sales is the minimum the command
+accepts; a few hundred with a few dozen sales is where the numbers
+start to mean something.
+
 ## The knowledge base
 
 The `knowledge/` folder holds what the engine knows about M&A in the
