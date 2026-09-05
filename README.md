@@ -161,10 +161,7 @@ Every number behind them is in the config: the age curve, the tenure
 thresholds, the generation gap used to spot an heir, the weights. The
 age curve is the one worth explaining.
 
-The age curve does not simply rise with age. An owner still running
-the company at 82 has shown over many years that he does not intend to
-sell, and by then the succession has usually been settled one way or
-another. The owner most likely to actually sell is in his sixties:
+The owner most likely to sell is in his sixties:
 past the statutory retirement age, still in good health, with a
 business that is still easy to hand over. So the curve rises through
 the fifties, peaks between about 63 and 72, and declines after that
@@ -253,33 +250,21 @@ example market, as YAML files that the language model reads and that
 anyone can open and check. The matching module and the dossier use
 them, and nothing is in a prompt that is not also in these files.
 
-- `buyers_china.yaml` describes who buys private companies in China
-  (listed companies, industrial M&A funds, local state platforms,
-  search funds, trade buyers, foreign strategics), what each of them
-  wants, and what constrains them.
+- `buyers_china.yaml` describes the buyers: listed companies, industrial M&A funds, local state platforms,
+  search funds, trade buyers, foreign strategics and their economics.
 - `fit_criteria.yaml` lists what makes a company a good target and the
   problems that end deals in due diligence.
 - `deal_structures.yaml` covers the deal structures that suit a
   succession sale.
-- `origination_playbook.yaml` covers how we source deals: how buyer
+- `origination_playbook.yaml` covers how buyer
   lists are built and ranked, what tells us a seller is serious,
   published outreach benchmarks, and the standard formats for a teaser
   and a target profile.
 - `valuation_heuristics.yaml` gives multiples for small and mid-sized
   companies by size, and typical terms for rollover equity, seller
   notes and earnouts.
-- `seller_economics.yaml` covers what the founder actually receives:
-  the 20% individual income tax on share transfers, when the tax
-  authority sets the price itself, who withholds the tax, and the fact
-  that a performance undertaking given by the founder personally is
-  enforceable while one given by the company often is not.
+- `seller_economics.yaml` covers the economics of the seller side.
 
-Every number in these files carries a confidence tag (well-sourced,
-medium, or heuristic) so that the reader and the model both know how
-much weight to give it.
-
-For another market, write your own set of files in the same shape and
-set `MA_ENGINE_KNOWLEDGE_DIR` to that folder.
 
 ## Rules the project follows
 
@@ -288,26 +273,6 @@ set `MA_ENGINE_KNOWLEDGE_DIR` to that folder.
 2. **Real data is the user's responsibility.** Whoever runs the engine
    on real company data must comply with the rules that apply to them
    and to that data. The project does not do this for you.
-3. **No scraping.** For the Chinese example, courts there have
-   convicted people for scraping registry and platform data from
-   behind anti-bot measures, and have rejected the argument that the
-   data was already public. The only route to unlisted-company data
-   that this project supports is an official API, with the user's own
-   credentials.
-4. **Estimates are marked as estimates.** An age inferred from a name
-   is a probability, and every output says so.
-5. **Scores are not claims about people.** A score says where to look
-   first. It does not say that anyone intends to sell, retire, or
-   anything else.
-
-## Roadmap
-
-- [ ] Resolve controllers held through intermediate holding companies.
-      Today these are classed as "other legal person" instead of being
-      traced up the chain.
-- [ ] Reference implementation of the QCC adapter.
-- [ ] Match against a real universe of acquirers, not only buyer types.
-- [ ] A second example market.
 
 ## License
 
