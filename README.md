@@ -3,7 +3,7 @@
 [![tests](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml/badge.svg)](https://github.com/Boldtulip/ma-engine/actions/workflows/tests.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-MA Engine is an open-source engine for predictive deal sourcing. It
+MA Engine is an engine for predictive deal sourcing. It
 ranks companies by how likely the owner is to sell, and writes out the
 reason behind every score.
 
@@ -12,20 +12,13 @@ headline financials. Each company runs through a set of signals: the
 owner's age, how long they have held the company, whether a successor
 is visible in the records, and signs of financial pressure. Each
 signal returns a value, a confidence and one sentence. The score is
-their weighted sum, and the sentences are kept, so a ranking can be
-read back as a list of statements that can be checked one by one. The
-engine then matches each company against buyer types held in an
-editable knowledge base and drafts a dossier.
+their weighted sum. The
+engine then matches each company against buyer types held in a knowledge base and drafts a dossier.
 
-It cannot know whether an owner wants to sell. The signals are
-proxies, and a high score means a company is worth looking at, not
-that it is for sale. Nothing here is calibrated: no outcome data ships
-with the repository, so the weights and the curves are judgment until
-you fit them to a record of real sales. Where an age is not
+Weights need to be fine-tuned on the specific application dataset. The score metric similarly needs to be calibrated individually. Where an age is not
 disclosed, the engine does not guess one: it derives a lower bound
 from how long the owner has held the company, and says so in the
-output. The engine ranks and drafts; it does not value a company or
-replace diligence.
+output.
 
 The version in this repository is set up for one example market,
 China, and runs on synthetic data. The founders who started China's
@@ -33,9 +26,7 @@ private companies in the 1980s and 1990s are reaching retirement age
 at the same time. Estimates put the number of private companies facing
 a succession decision in the next ten years at over three million, and
 in surveys a large share of the second generation says it does not
-want to take over. Japan went through the same transition about ten
-years earlier, and there the hard part was finding the companies
-before anyone else did.
+want to take over. 
 
 <p align="center">
   <img src="docs/demo.svg" alt="Terminal output of ma-engine demo: a ranked list of fictional companies with a succession score and a one-line reason for each" width="920">
